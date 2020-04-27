@@ -9,7 +9,8 @@ WORKDIR /usr/src/app/
 COPY . .
 
 COPY pip.conf /root/.pip/
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r /usr/src/app/requirements.txt
 
-# ENTRYPOINT ["pipdeptree"]
-CMD ["python3 -V"]
+EXPOSE 8000
+ENTRYPOINT ["python3"]
+CMD ["manage.py", "runserver", "0:8000"]
