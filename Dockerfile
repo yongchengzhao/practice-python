@@ -6,9 +6,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app/
-COPY requirements.txt $WORKDIR/
-COPY pip.conf $HOME/.pip/
-RUN pip3 install -r $WORKDIR/requirements.txt
+COPY . .
 
-ENTRYPOINT ["pipdeptree"]
-CMD ["-f"]
+COPY pip.conf /root/.pip/
+RUN pip3 install -r requirements.txt
+
+# ENTRYPOINT ["pipdeptree"]
+CMD ["python3 -V"]
