@@ -5,11 +5,12 @@ RUN apt-get update && \
     apt-get install -y vim && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/src/app/
+ENV WORK_PATH /usr/src/app/
+WORKDIR $WORK_PATH
 COPY . .
 
 COPY pip.conf /root/.pip/
-RUN pip3 install -r /usr/src/app/requirements.txt
+RUN pip3 install -r $WORK_PATH/requirements.txt
 
 EXPOSE 8000
 ENTRYPOINT ["python3"]
