@@ -667,10 +667,12 @@ def test_uuid():
 
 def test_char():
 
-    for i in range(65, 91):
+    for i in range(65, 69):
         ch = chr(i)
         ch_lower = chr(i + 32)
         print(f'{ch}oo{ch_lower}le')
+
+    print(ord('a'))
 
 
 if __name__ == '__main__':
