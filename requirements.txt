@@ -1,3 +1,5 @@
 django==2.2.12
 djangorestframework==3.11.0
 pipdeptree==0.13.2
+
+pypdf2==1.25

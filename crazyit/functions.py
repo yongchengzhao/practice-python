@@ -12,6 +12,7 @@ import _thread
 import ftplib
 
 from rest_framework.response import Response
+from PyPDF2 import PdfFileReader
 
 
 def standardize_form_file_names(forms, unit_type):
@@ -673,6 +674,13 @@ def test_char():
         print(f'{ch}oo{ch_lower}le')
 
     print(ord('a'))
+
+
+def test_pdf():
+    print(f'----------test_pdf----------')
+    pdf = PdfFileReader('ppp.pdf')
+    page_amount = pdf.getNumPages()
+    print(page_amount)
 
 
 if __name__ == '__main__':
