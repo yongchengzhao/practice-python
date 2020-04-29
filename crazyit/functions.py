@@ -665,6 +665,14 @@ def test_uuid():
     print(str(uuid.uuid4()).replace('-', '')[:16])
 
 
+def test_char():
+
+    for i in range(65, 91):
+        ch = chr(i)
+        ch_lower = chr(i + 32)
+        print(f'{ch}oo{ch_lower}le')
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_uuid()
+    test_char()
