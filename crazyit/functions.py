@@ -685,12 +685,12 @@ def test_pdf():
 
 class Account:
 
-    def __init__(self, code, name=None, age=None):
+    def __init__(self, code: str, name: str = None, age: int = None) -> None:
         self.__code = code
         self.__name = name
         self.__age = age
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Account[' \
                f'code={self.__code}' \
                f', name={self.__name}' \
@@ -698,11 +698,11 @@ class Account:
                f']'
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @name.setter
-    def name(self, value):
+    def name(self, value: str) -> None:
         self.__name = value
 
 
@@ -711,6 +711,8 @@ def test_print_obj():
     eve = Account(age=24, code='002')
     print(adam)
     print(eve)
+    print(adam.name)
+    adam.name = 'God'
     print(adam.name)
 
 
