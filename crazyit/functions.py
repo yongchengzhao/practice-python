@@ -548,9 +548,9 @@ def test_response_status():
 
 def test_type():
     ff = 1.2
-    print(type(ff))
-    print(type(type(ff)))
-    print(type(ff) in (float, int, str))
+    print(f'type(ff): {type(ff)}')
+    print(f'type(type(ff)): {type(type(ff))}')
+    print(f'type(ff) in (float, int, str): {type(ff) in (float, int, str)}')
 
 
 def test_out_index_error():
@@ -683,6 +683,28 @@ def test_pdf():
     print(page_amount)
 
 
+class Account:
+
+    def __init__(self, code, name=None, age=None):
+        self.code = code
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f'Account[' \
+               f'code={self.code}' \
+               f', name={self.name}' \
+               f', age={self.age}' \
+               f']'
+
+
+def test_print_obj():
+    adam = Account(name='Adam', code='001')
+    eve = Account(age=24, code='002')
+    print(adam)
+    print(eve)
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_char()
+    test_print_obj()
