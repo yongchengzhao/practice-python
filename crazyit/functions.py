@@ -705,6 +705,12 @@ def test_print_obj():
     print(eve)
 
 
+def test_data_type():
+    print(0 == -1)
+    print(0 == "")
+    # print(0 == None)
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_print_obj()
+    test_data_type()
