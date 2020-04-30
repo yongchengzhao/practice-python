@@ -701,6 +701,10 @@ class Account:
     def name(self):
         return self.__name
 
+    @name.setter
+    def name(self, value):
+        self.__name = value
+
 
 def test_print_obj():
     adam = Account(name='Adam', code='001')
