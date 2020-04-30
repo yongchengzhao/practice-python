@@ -686,16 +686,20 @@ def test_pdf():
 class Account:
 
     def __init__(self, code, name=None, age=None):
-        self.code = code
-        self.name = name
-        self.age = age
+        self.__code = code
+        self.__name = name
+        self.__age = age
 
     def __str__(self):
         return f'Account[' \
-               f'code={self.code}' \
-               f', name={self.name}' \
-               f', age={self.age}' \
+               f'code={self.__code}' \
+               f', name={self.__name}' \
+               f', age={self.__age}' \
                f']'
+
+    @property
+    def name(self):
+        return self.__name
 
 
 def test_print_obj():
@@ -703,6 +707,7 @@ def test_print_obj():
     eve = Account(age=24, code='002')
     print(adam)
     print(eve)
+    print(adam.name)
 
 
 def test_data_type():
@@ -713,4 +718,4 @@ def test_data_type():
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_data_type()
+    test_print_obj()
