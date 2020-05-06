@@ -238,10 +238,15 @@ def test_file():
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
 
-    temp_file = open(file_dir + filename, mode='wb+', buffering=4096)
+    file_path = file_dir + filename
+    temp_file = open(file_path, mode='wb+', buffering=4096)
     temp_file.write(b'a')
     temp_file.flush()
     temp_file.close()
+
+    print(os.path.exists(file_path))
+    print(os.path.basename(file_path))
+    print(os.path.splitext(file_path))
 
 
 def show_time(thread_name, delay):
