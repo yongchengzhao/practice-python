@@ -739,6 +739,13 @@ def test_operator():
     print(html)
 
 
+def test_function_elapse_time():
+    enter_time = datetime.datetime.now()
+    print(enter_time)
+    time.sleep(3)
+    print(f'function test_function_elapse_time() elapse {datetime.datetime.now() - enter_time}')
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_file()
+    test_function_elapse_time()
