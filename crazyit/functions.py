@@ -722,6 +722,18 @@ def test_data_type():
     # print(0 == None)
 
 
+def test_operator():
+    html = '''<html>'''
+    html += '''
+    <div>'''
+    html += '''
+    </div>'''
+    html += '''
+</html>
+'''
+    print(html)
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_print_obj()
+    test_file()
