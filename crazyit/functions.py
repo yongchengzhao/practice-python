@@ -10,7 +10,9 @@ import random
 import uuid
 import _thread
 import ftplib
+import json
 
+import requests
 from rest_framework.response import Response
 from PyPDF2 import PdfFileReader
 
@@ -746,6 +748,21 @@ def test_function_elapse_time():
     print(f'function test_function_elapse_time() elapse {datetime.datetime.now() - enter_time}')
 
 
+def test_requests():
+    url = f'http://10.215.160.41:6540/api/user/files/3517'
+    auth = ('yfg', 'yfg')
+    res = requests.get(url=url, auth=auth)
+    print(res.status_code)
+    print(res.content.decode('utf-8'))
+    print(f'type(res.content.decode("utf-8")): {type(res.content.decode("utf-8"))}')
+    print(json.loads(res.content).get('id'))
+    print(f"type(json.loads(res.content).get('id')): {type(json.loads(res.content).get('id'))}")
+    print(res.elapsed)
+    print(res.next)
+    print(res.text)
+    print(res.raise_for_status())
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_function_elapse_time()
+    test_requests()
