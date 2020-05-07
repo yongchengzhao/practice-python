@@ -763,6 +763,14 @@ def test_requests():
     print(res.raise_for_status())
 
 
+def test_type_hints(user_id: int or str) -> dict:
+    print(user_id)
+    print(str(user_id))
+    print(repr(user_id))
+    return {}
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_requests()
+    test_type_hints('1')
+    # test_requests()
