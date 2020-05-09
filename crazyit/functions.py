@@ -457,7 +457,10 @@ def test_format():
         }
     ]
     ss = 'test dict: {0}'.format(dic).replace("'", '"').encode('utf-8')
-    print(ss)
+    print(ss.decode('utf8'))
+
+    ii = 7
+    print('格式化数字：%03d' % ii)
 
 
 def test_time_format():
@@ -773,4 +776,4 @@ def test_type_hints(user_id: int or str) -> dict:
 if __name__ == '__main__':
     print(f'----------main----------')
     # test_type_hints('1')
-    test_requests()
+    test_format()
