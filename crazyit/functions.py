@@ -772,5 +772,5 @@ def test_type_hints(user_id: int or str) -> dict:
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_type_hints('1')
-    # test_requests()
+    # test_type_hints('1')
+    test_requests()
