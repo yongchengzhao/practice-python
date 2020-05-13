@@ -4,7 +4,7 @@ from inspect import ismethod, isfunction
 from datetime import datetime
 
 
-def log_parameter_decorator(fn):
+def log_parameter(fn):
     # print(f"{'-' * 60}log_parameter_decorator")
 
     def log_parameter(*args):
@@ -20,7 +20,12 @@ def log_parameter_decorator(fn):
     return log_parameter
 
 
-def log_elapse_decorator(fn):
+def log_elapse(fn):
+    """
+    耗时装饰器。计算函数或者方法耗时多少。
+    :param fn:
+    :return:
+    """
     # print(f"{'-' * 60}log_time_decorator")
 
     def log_time(*args):
@@ -38,15 +43,15 @@ def log_elapse_decorator(fn):
 
 def test_function():
     print(f"{'-' * 60}test_function")
-    func = log_parameter_decorator
+    func = log_parameter
     # for proper in dir(func):
     #     print(f'{proper}: {func.__getattribute__(proper)}')
     print(ismethod(func))
     print(isfunction(func))
 
 
-@log_elapse_decorator
-@log_parameter_decorator
+@log_elapse
+@log_parameter
 def add(a, b):
     # print(f"{'-' * 60}add")
     return sum([a, b])
