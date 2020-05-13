@@ -707,6 +707,9 @@ class Account:
                f', age={self.__age}' \
                f']'
 
+    def __unicode__(self):
+        print(f"{'-' * 10}__unicode__方法{'-' * 10}")
+
     @property
     def name(self) -> str:
         return self.__name
@@ -776,4 +779,4 @@ def test_type_hints(user_id: int or str) -> dict:
 if __name__ == '__main__':
     print(f'----------main----------')
     # test_type_hints('1')
-    test_format()
+    test_print_obj()
