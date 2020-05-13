@@ -7,8 +7,8 @@ from datetime import datetime
 def log_parameter(fn):
     # print(f"{'-' * 60}log_parameter_decorator")
 
-    def log_parameter(*args):
-        # print(f"{'-' * 60}log_parameter")
+    def decorated(*args):
+        # print(f"{'-' * 60}decorated")
         fn_type = 'method' if ismethod(fn) else 'function'
         print(f"Enter {fn_type} {fn.__name__}(), args is {args}.")
 
@@ -17,7 +17,7 @@ def log_parameter(fn):
         print(f'Exit {fn_type} {fn.__name__}().')
         return result
 
-    return log_parameter
+    return decorated
 
 
 def log_elapse(fn):
@@ -28,8 +28,8 @@ def log_elapse(fn):
     """
     # print(f"{'-' * 60}log_time_decorator")
 
-    def log_time(*args):
-        # print(f"{'-' * 60}log_time")
+    def decorated(*args):
+        # print(f"{'-' * 60}decorated")
         enter_time = datetime.now()
         print(f"Enter {fn.__name__}(), time is {enter_time}.")
 
@@ -41,7 +41,7 @@ def log_elapse(fn):
 
         return result
 
-    return log_time
+    return decorated
 
 
 def test_function():
