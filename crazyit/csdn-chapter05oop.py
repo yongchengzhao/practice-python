@@ -1,6 +1,7 @@
 # coding: utf-8
 
 from inspect import ismethod, isfunction
+from datetime import datetime
 
 
 def log_parameter_decorator(fn):
@@ -19,6 +20,22 @@ def log_parameter_decorator(fn):
     return log_parameter
 
 
+def log_elapse_decorator(fn):
+    # print(f"{'-' * 60}log_time_decorator")
+
+    def log_time(*args):
+        print(f"{'-' * 60}log_time")
+        enter_time = datetime.now()
+        print(f"Enter time is {enter_time}")
+
+        result = fn(*args)
+
+        print(f'Exit time is {datetime.now()}, elapse {datetime.now() - enter_time}')
+        return result
+
+    return log_time
+
+
 def test_function():
     print(f"{'-' * 60}test_function")
     func = log_parameter_decorator
@@ -28,6 +45,7 @@ def test_function():
     print(isfunction(func))
 
 
+@log_elapse_decorator
 @log_parameter_decorator
 def add(a, b):
     # print(f"{'-' * 60}add")
