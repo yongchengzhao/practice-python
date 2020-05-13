@@ -2,11 +2,13 @@
 
 from inspect import ismethod, isfunction
 from datetime import datetime
+from functools import wraps
 
 
 def log_parameter(fn):
     # print(f"{'-' * 60}log_parameter_decorator")
 
+    @wraps(fn)
     def decorated(*args):
         # print(f"{'-' * 60}decorated")
         fn_type = 'method' if ismethod(fn) else 'function'
@@ -28,6 +30,7 @@ def log_elapse(fn):
     """
     # print(f"{'-' * 60}log_time_decorator")
 
+    @wraps(fn)
     def decorated(*args):
         # print(f"{'-' * 60}decorated")
         enter_time = datetime.now()
