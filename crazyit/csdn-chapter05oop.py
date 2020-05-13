@@ -29,13 +29,16 @@ def log_elapse(fn):
     # print(f"{'-' * 60}log_time_decorator")
 
     def log_time(*args):
-        print(f"{'-' * 60}log_time")
+        # print(f"{'-' * 60}log_time")
         enter_time = datetime.now()
-        print(f"Enter time is {enter_time}")
+        print(f"Enter {fn.__name__}(), time is {enter_time}.")
 
         result = fn(*args)
 
-        print(f'Exit time is {datetime.now()}, elapse {datetime.now() - enter_time}')
+        exit_time = datetime.now()
+        print(f'Exit {fn.__name__}(), time is {exit_time}, elapse {exit_time - enter_time}.')
+        del enter_time, exit_time
+
         return result
 
     return log_time
@@ -50,8 +53,8 @@ def test_function():
     print(isfunction(func))
 
 
-@log_elapse
 @log_parameter
+@log_elapse
 def add(a, b):
     # print(f"{'-' * 60}add")
     return sum([a, b])
