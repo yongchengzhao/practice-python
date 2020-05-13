@@ -47,6 +47,35 @@ def log_elapse(fn):
     return decorated
 
 
+class Person:
+
+    def __init__(self, name, code, age):
+        self.name = name
+        self.code = code
+        self.age = age
+
+    def __str__(self):
+        return f'[Person ' \
+               f'name={self.name}' \
+               f', code={self.code}' \
+               f', age={self.age}' \
+               f']'
+
+    @log_parameter
+    @log_elapse
+    def walk(self):
+        print(f'{self.name} 在走路。')
+
+
+def test_person():
+    p1 = Person('Adam', '002', 20)
+    # print(p1)
+    print(type(p1.walk))
+    print(p1.walk.__class__)
+    print(ismethod(p1.walk))
+    p1.walk()
+
+
 def test_function():
     print(f"{'-' * 60}test_function")
     func = log_parameter
