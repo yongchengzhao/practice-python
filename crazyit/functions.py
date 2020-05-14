@@ -776,7 +776,35 @@ def test_type_hints(user_id: int or str) -> dict:
     return {}
 
 
+class ModifyFormAuditOperator:
+
+    def __init__(self, base_url='http://10.215.160.41:6544/main/modify-form-audit/', auth=('admin', 'adminadmin')):
+        self.__base_url = base_url
+        self.__auth = auth
+
+    def get_obj_list(self):
+        obj_list = json.loads(requests.get(url=self.__base_url, auth=self.__auth).content)
+        return obj_list
+
+    def get_id_list(self):
+        obj_list = self.get_obj_list()
+        id_list = [obj.get('id', 0) for obj in obj_list]
+        return id_list
+
+    def del_by_id(self, _id):
+        url = self.__base_url + f'{_id}'
+        res = requests.delete(url=url, auth=self.__auth)
+        print(f'{_id}: {res.status_code}')
+
+    def clear(self):
+        id_list = self.get_id_list()
+        for _id in id_list:
+            self.del_by_id(_id)
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
     # test_type_hints('1')
     test_print_obj()
+    # modify_form_audit_operator = ModifyFormAuditOperator()
+    # modify_form_audit_operator.clear()
