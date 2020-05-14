@@ -16,6 +16,9 @@ import requests
 from rest_framework.response import Response
 from PyPDF2 import PdfFileReader
 
+from decorators import BaseDecorator, ElapseDecorator, LogArgDecorator, LogResultDecorator, EnterExitDecorator
+from decorators import enter_decorator, exit_decorator, elapse, log_args
+
 
 def standardize_form_file_names(forms, unit_type):
     if not forms:
@@ -802,9 +805,37 @@ class ModifyFormAuditOperator:
             self.del_by_id(_id)
 
 
+@ElapseDecorator
+@LogArgDecorator
+@EnterExitDecorator
+@LogResultDecorator
+def test_class_base_decorators(a):
+    print(f'Function test_class_base_decorators(), {a}.')
+
+
+@enter_decorator
+@exit_decorator
+@elapse
+@log_args
+def test_func_base_decorators(a):
+    print(f'Function test_func_base_decorators(), {a}, {"-" * 40}.')
+    return a, a
+
+
+@elapse
+class Foo:
+
+    def __init__(self):
+        print(f'Foo.__init__()')
+
+    @elapse
+    def bar(self):
+        pass
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
     # test_type_hints('1')
-    test_print_obj()
+    test_class_base_decorators(f'sss')
     # modify_form_audit_operator = ModifyFormAuditOperator()
     # modify_form_audit_operator.clear()
