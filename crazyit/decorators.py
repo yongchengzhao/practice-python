@@ -111,7 +111,8 @@ def duration(func):
     def wrapper(*args, **kwargs):
         print(func)
         enter_time = datetime.now()
-        print(f'Enter {func.__name__}(), the time is {enter_time}.')
+        enter_info = f'Enter {func.__name__}(), in {func.__code__.co_filename} line {func.__code__.co_firstlineno}.'
+        print(enter_info + f' The time is {enter_time}.')
 
         result = func(*args, **kwargs)
 
