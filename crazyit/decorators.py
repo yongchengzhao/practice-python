@@ -105,7 +105,7 @@ def exit_decorator(func):
     return wrapper
 
 
-def elapse(func):
+def duration(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):

@@ -17,7 +17,7 @@ from rest_framework.response import Response
 from PyPDF2 import PdfFileReader
 
 from decorators import BaseDecorator, ElapseDecorator, LogArgDecorator, LogResultDecorator, EnterExitDecorator
-from decorators import enter_decorator, exit_decorator, elapse, log_args
+from decorators import enter_decorator, exit_decorator, duration, log_args
 
 
 def standardize_form_file_names(forms, unit_type):
@@ -815,20 +815,20 @@ def test_class_base_decorators(a):
 
 @enter_decorator
 @exit_decorator
-@elapse
+@duration
 @log_args
 def test_func_base_decorators(a):
     print(f'Function test_func_base_decorators(), {a}, {"-" * 40}.')
     return a, a
 
 
-@elapse
+@duration
 class Foo:
 
     def __init__(self):
         print(f'Foo.__init__()')
 
-    @elapse
+    @duration
     def bar(self):
         pass
 
