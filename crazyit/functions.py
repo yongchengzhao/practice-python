@@ -833,9 +833,11 @@ class Foo:
         pass
 
 
+def test_collect_args(*args, **kwargs):
+    print(args)
+    print(kwargs)
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    # test_type_hints('1')
-    test_class_base_decorators(f'sss')
-    # modify_form_audit_operator = ModifyFormAuditOperator()
-    # modify_form_audit_operator.clear()
+    test_collect_args(2, name='adam')
