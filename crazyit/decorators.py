@@ -106,11 +106,23 @@ def exit_decorator(func):
 
 
 def duration(func):
+    """
+    计算函数耗时装饰器。可以计算“被装饰函数”运行耗时。
+    :param func: “被装饰函数”。
+    :return:
+    """
 
     @wraps(func)
     def wrapper(*args, **kwargs):
+        """
+        包装函数，此函数将“被装饰函数”包装成功能更强大的函数。
+        :param args: 收集位置参数。
+        :param kwargs: 收集关键字参数。
+        :return: 返回“被装饰函数”运行结果。
+        """
         print(func)
         enter_time = datetime.now()
+        # func.__code__.co_filename 为“被装饰函数”所在文件，func.__code__.co_firstlineno 为“被装饰函数”第一行代码的行号。
         enter_info = f'Enter {func.__name__}(), in {func.__code__.co_filename} line {func.__code__.co_firstlineno}.'
         print(enter_info + f' The time is {enter_time}.')
 
