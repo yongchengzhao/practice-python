@@ -252,6 +252,10 @@ def test_file():
     print(os.path.exists(file_path))
     print(os.path.basename(file_path))
     print(os.path.splitext(file_path))
+    print(os.path.split(file_path))
+    print(os.path.splitunc(file_path))
+    print(os.path.splitdrive(file_path))
+    print(os.path.splitext(os.path.basename(file_path))[0])
 
 
 def show_time(thread_name, delay):
@@ -840,4 +844,4 @@ def test_collect_args(*args, **kwargs):
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_collect_args(2, name='adam')
+    test_file()
