@@ -546,10 +546,17 @@ def test_list_reduce():
 
 def test_str():
     ss = '012345'
-    print(ss[2])
+    print(ss[2])  # 2
 
-    print(f'ss.split("-"): {ss.split("-")}')
-    print(f'type(ss.split("-")): {type(ss.split("-"))}')
+    print(f'ss.split("-"): {ss.split("-")}')  # ss.split("-"): ['012345']
+    print(f'type(ss.split("-")): {type(ss.split("-"))}')  # type(ss.split("-")): <class 'list'>
+
+    first_arg = 'first_arg'
+    second_arg = 'second_arg'
+    ss2 = (' ' * 32 + '我打算找一个很长的字符串用来格式化，并且在过程中代码会换行。这是第一个格式化：{}， 这是第二个{}。').\
+        format(first_arg, second_arg)
+    #                                 我打算找一个很长的字符串用来格式化，并且在过程中代码会换行。这是第一个格式化：first_arg， 这是第二个second_arg。
+    print(ss2)
 
 
 def test_sys():
@@ -844,4 +851,4 @@ def test_collect_args(*args, **kwargs):
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_file()
+    test_str()
