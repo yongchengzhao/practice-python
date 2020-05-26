@@ -375,6 +375,15 @@ def test_dict():
     update_gender(dd)
     print(dd, 'add gender via function')
 
+    print('-' * 60)
+    dd2 = {'a': 1, 'b': 2, 'c': 3}
+    for item in dd2.items():
+        print(item)
+    dd2['e'] = 5
+    dd2['d'] = 4
+    for item in dd2.items():
+        print(item)
+
 
 def update_gender(dd):
     dd.update(gender='female')
@@ -851,4 +860,4 @@ def test_collect_args(*args, **kwargs):
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_str()
+    test_dict()
