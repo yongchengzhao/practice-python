@@ -614,16 +614,16 @@ def test_finally():
         print('finally')
 
 
-def test_md5_insert():
-    md5 = '6dc9559d9a0af7efce0e09ab18e19d0e'
-    my_print('md5', md5)
-
-    salted_md5 = salt_md5(md5)
-    my_print('salted_md5', salted_md5)
-
-    desalted_md5, salt = desalt_md5(salted_md5)
-    my_print('desalted_md5', desalted_md5)
-    my_print('salt', salt)
+# def test_md5_insert():
+#     md5 = '6dc9559d9a0af7efce0e09ab18e19d0e'
+#     my_print('md5', md5)
+#
+#     salted_md5 = salt_md5(md5)
+#     my_print('salted_md5', salted_md5)
+#
+#     desalted_md5, salt = desalt_md5(salted_md5)
+#     my_print('desalted_md5', desalted_md5)
+#     my_print('salt', salt)
 
 
 def salt_md5(md5):
@@ -636,27 +636,27 @@ def salt_md5(md5):
     return salted_md5
 
 
-def desalt_md5(salted_md5):
-    """
-    将加盐后的 md5 值去盐。如果没有加盐，则返回 md5 本身。
-    @param salted_md5:
-    @return: 返回去盐后的 md5 值和盐，二者都是 str 类型。
-    """
-    md5_length, salted_md5_length = 32, 48
-
-    if not isinstance(salted_md5, str):
-        return None, None
-    elif salted_md5_length == len(salted_md5):
-        desalted_md5 = ''
-        for i in range(0, 48, 3):
-            desalted_md5 += salted_md5[i: i + 2]
-        salt = ''.join([salted_md5[3 * i - 1] for i in range(1, 17)])
-
-        return desalted_md5, salt
-    elif md5_length == len(salted_md5):
-        return salted_md5, None
-    else:
-        return None, None
+# def desalt_md5(salted_md5):
+#     """
+#     将加盐后的 md5 值去盐。如果没有加盐，则返回 md5 本身。
+#     @param salted_md5:
+#     @return: 返回去盐后的 md5 值和盐，二者都是 str 类型。
+#     """
+#     md5_length, salted_md5_length = 32, 48
+#
+#     if not isinstance(salted_md5, str):
+#         return None, None
+#     elif salted_md5_length == len(salted_md5):
+#         desalted_md5 = ''
+#         for i in range(0, 48, 3):
+#             desalted_md5 += salted_md5[i: i + 2]
+#         salt = ''.join([salted_md5[3 * i - 1] for i in range(1, 17)])
+#
+#         return desalted_md5, salt
+#     elif md5_length == len(salted_md5):
+#         return salted_md5, None
+#     else:
+#         return None, None
 
 
 def my_print(para_name, para_value):
