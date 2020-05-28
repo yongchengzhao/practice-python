@@ -910,11 +910,13 @@ def init_procedure_sequence():
     url = 'http://localhost:18006/main/api/procedure_sequence/'
     headers = {'content-type': 'application/json'}
     for name in data_list:
+        sequence = data_list.index(name) + 1
+        depend_on = []
         post_data = {
             'name': name,
-            'sequence': data_list.index(name) + 1,
+            'sequence': sequence,
             'unit_type': 'hntgc',
-            'depend_on': []
+            'depend_on': depend_on
         }
         res = requests.post(url=url, data=json.dumps(post_data), headers=headers)
         print(data_list.index(name) + 1, res.status_code, res.content)
