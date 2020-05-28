@@ -858,6 +858,43 @@ def test_collect_args(*args, **kwargs):
     print(kwargs)
 
 
+def init_procedure_sequence():
+    data_list = [
+        '混凝土建基面验收联合检验签证表',
+        '基础面或混凝土施工缝处理工序验收及质量评定表',
+        '混凝土模板工序验收及质量评定表',
+        '混凝土滑模工序验收及质量评定表',
+        '清水混凝土模板工序验收及质量评定表',
+        '钢筋接头现场验收合格证',
+        '混凝土钢筋工序验收及质量评定表',
+        '止水片（带）安装验收及质量评定表',
+        '排水设施安装质量评定表',
+        '铁件安装验收及质量评定表',
+        '混凝土浇筑前仓内重要结构埋件联合验收单',
+        '伸缩缝材料安装验收及质量评定表',
+        '混凝土（开工、仓）申请（许可）单',
+        '冷却及接缝灌浆管路安装验收及质量评定表',
+        '混凝土工程冷却水管通水检查记录表',
+        '预埋件工序安装质量评定表',
+        '混凝土外观质量评定表',
+        '清水混凝土外观质量评定表',
+        '混凝土浇筑工序质量检验签证表',
+        '混凝土单元工程质量评定表'
+    ]
+
+    url = 'http://localhost:18006/main/api/procedure_sequence/'
+    headers = {'content-type': 'application/json'}
+    for name in data_list:
+        post_data = {
+            'name': name,
+            'sequence': data_list.index(name) + 1,
+            'unit_type': 'hntgc',
+            'depend_on': []
+        }
+        res = requests.post(url=url, data=json.dumps(post_data), headers=headers)
+        print(data_list.index(name) + 1, res.status_code, res.content)
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_dict()
+    init_procedure_sequence()
