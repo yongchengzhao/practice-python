@@ -932,6 +932,35 @@ def delete_all_procedure_sequence():
         print(f'{info.get("id")}: {res.status_code}')
 
 
+def test_date_parse():
+    sign_time_list = []
+    date_time_str_list = [
+        '2020-05-26 15:38:20',
+        '2020-05-28 15:38:21',
+        '2020-05-28 15:38:22',
+        None,
+        '2020-07-28 15:38:23',
+        '2020-05-23 15:18:24',
+        '2020-05-28 15:38:25',
+        None,
+        '2020-05-28 15:38:26',
+        '2020-05-21 15:38:27',
+        '2021-05-28 19:38:28',
+        '1020-05-28 15:38:29'
+    ]
+
+    for supervisor_sign_time in date_time_str_list:
+        if not supervisor_sign_time:
+            continue
+
+        supervisor_sign_time = supervisor_sign_time[0:10]
+        sign_time_list.append(datetime.datetime.strptime(supervisor_sign_time, '%Y-%m-%d'))
+
+    print(sign_time_list)
+    print(min(sign_time_list).strftime('%Y-%m-%d'))
+    print(max(sign_time_list).strftime('%Y-%m-%d'))
+
+
 def test():
     print(f'test')
 
