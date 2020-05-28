@@ -907,7 +907,7 @@ def init_procedure_sequence():
         '混凝土单元工程质量评定表'
     ]
 
-    url = 'http://localhost:18006/main/api/procedure_sequence/'
+    base_url = 'http://localhost:18006/main/api/procedure_sequence/'
     headers = {'content-type': 'application/json'}
     for name in data_list:
         sequence = data_list.index(name) + 1
@@ -918,16 +918,16 @@ def init_procedure_sequence():
             'unit_type': 'hntgc',
             'depend_on': depend_on
         }
-        res = requests.post(url=url, data=json.dumps(post_data), headers=headers)
+        res = requests.post(url=base_url, data=json.dumps(post_data), headers=headers)
         print(data_list.index(name) + 1, res.status_code, res.content.decode('utf-8'))
 
 
 def delete_all_procedure_sequence():
-    url = 'http://localhost:18006/main/api/procedure_sequence/'
-    procedure_sequence_info_list = json.loads(requests.get(url=url).content)
+    base_url = 'http://localhost:18006/main/api/procedure_sequence/'
+    procedure_sequence_info_list = json.loads(requests.get(url=base_url).content)
 
     for info in procedure_sequence_info_list:
-        del_url = f'{url}{info.get("id")}/'
+        del_url = f'{base_url}{info.get("id")}/'
         res = requests.delete(url=del_url)
         print(f'{info.get("id")}: {res.status_code}')
 
