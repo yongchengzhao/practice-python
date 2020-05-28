@@ -932,6 +932,77 @@ def delete_all_procedure_sequence():
         print(f'{info.get("id")}: {res.status_code}')
 
 
+def process_procedure_sequence_dependency():
+
+    def get_procedure_sequence_info_by_sequence(sequence_: int) -> dict:
+        query_url = f'{base_url}?unit_type=hntgc&sequence={sequence_}'
+        return json.loads(requests.get(url=query_url).content.decode('utf-8'))[0]
+
+    def get_patch_data_by_sequence(sequence__: int) -> dict:
+        patch_data_ = {}
+
+        if sequence__ == 1:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [],
+                'depend_optional': []
+            }
+        elif sequence__ == 2:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [],
+                'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list if info_['sequence'] == 1]
+            }
+        elif sequence__ in [3, 4, 5, 6, 8, 9, 10, 11, 12, 14, 15, 16]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list if info_['sequence'] == 2],
+                'depend_optional': []
+            }
+        elif sequence__ == 7:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list if info_['sequence'] == 6],
+                'depend_optional': []
+            }
+        elif sequence__ == 13:
+            patch_data_ = {
+                'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
+                                        if info_['sequence'] in [3, 4, 5, 7, 8, 9, 10, 11, 12]],
+                'depend_have_to': [],
+                'depend_optional': []
+            }
+        elif sequence__ in [17, 18, 19]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] == 13],
+                'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
+                                    if info_['sequence'] in [14, 15, 16]],
+            }
+        elif sequence__ == 20:
+            patch_data_ = {
+                'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
+                                        if info_['sequence'] in [17, 18, 19]],
+                'depend_have_to': [],
+                'depend_optional': []
+            }
+
+        return patch_data_
+
+    base_url = 'http://localhost:18006/main/api/procedure_sequence/'
+    procedure_sequence_info_list = [get_procedure_sequence_info_by_sequence(i) for i in range(1, 21)]
+    # print(procedure_sequence_info_list)
+
+    for info in procedure_sequence_info_list:
+        sequence = info.get('sequence')
+        patch_data = get_patch_data_by_sequence(sequence)
+
+        patch_url = f'{base_url}{info["id"]}/'
+        res = requests.patch(url=patch_url, data=patch_data)
+        print(info['id'], res.status_code, res.content.decode('utf-8'))
+
+
 def test_date_parse():
     sign_time_list = []
     date_time_str_list = [
