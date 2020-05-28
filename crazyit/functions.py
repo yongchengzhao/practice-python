@@ -920,6 +920,10 @@ def init_procedure_sequence():
         print(data_list.index(name) + 1, res.status_code, res.content)
 
 
+def test():
+    print(f'test')
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
-    init_procedure_sequence()
+    test()
