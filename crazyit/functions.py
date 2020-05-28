@@ -919,7 +919,7 @@ def init_procedure_sequence():
             'depend_on': depend_on
         }
         res = requests.post(url=url, data=json.dumps(post_data), headers=headers)
-        print(data_list.index(name) + 1, res.status_code, res.content)
+        print(data_list.index(name) + 1, res.status_code, res.content.decode('utf-8'))
 
 
 def test():
