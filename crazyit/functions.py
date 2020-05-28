@@ -922,6 +922,16 @@ def init_procedure_sequence():
         print(data_list.index(name) + 1, res.status_code, res.content.decode('utf-8'))
 
 
+def delete_all_procedure_sequence():
+    url = 'http://localhost:18006/main/api/procedure_sequence/'
+    procedure_sequence_info_list = json.loads(requests.get(url=url).content)
+
+    for info in procedure_sequence_info_list:
+        del_url = f'{url}{info.get("id")}/'
+        res = requests.delete(url=del_url)
+        print(f'{info.get("id")}: {res.status_code}')
+
+
 def test():
     print(f'test')
 
