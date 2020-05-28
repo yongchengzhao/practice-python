@@ -858,6 +858,31 @@ def test_collect_args(*args, **kwargs):
     print(kwargs)
 
 
+def test_write():
+    with open(file='a.xml', mode='w', buffering=True, encoding='UTF-8') as meta_file:
+        temp = f'''<?xml version="1.0" encoding="UTF-8"?>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.saac.gov.cn/standards/ERM/encapsulation"
+    targetNamespace="http://www.saac.gov.cn/standards/ERM/encapsulation"
+    elementFormDefault="qualified">
+
+    <xs:element name="电子文件封装包">
+        <xs:annotation>
+            <xs:documentation>eep 根元素</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="封装包格式描述"/>
+                <xs:element ref="版本"/>
+                <xs:element ref="被签名对象"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="封装包格式描述" type="xs:string" default="本EEP根据中华人民共和国档案行业标准DA/T 48-2009《基于XML的电子文件封装规范》生成"/>
+    <xs:element name="版本" type="xs:gYear" fixed="2009">\n'''
+        meta_file.write(temp)
+
+
 def init_procedure_sequence():
     data_list = [
         '混凝土建基面验收联合检验签证表',
