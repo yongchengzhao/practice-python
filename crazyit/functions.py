@@ -941,51 +941,85 @@ def process_procedure_sequence_dependency():
     def get_patch_data_by_sequence(sequence__: int) -> dict:
         patch_data_ = {}
 
-        if sequence__ == 1:
+        if sequence__ in [1]:
             patch_data_ = {
                 'depend_at_least_one': [],
                 'depend_have_to': [],
-                'depend_optional': []
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [2]]
             }
-        elif sequence__ == 2:
+        elif sequence__ in [2]:
             patch_data_ = {
                 'depend_at_least_one': [],
                 'depend_have_to': [],
-                'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list if info_['sequence'] == 1]
+                'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
+                                    if info_['sequence'] in [1]],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [3, 4, 5, 6, 8, 9, 10, 11, 12]]
             }
-        elif sequence__ in [3, 4, 5, 6, 8, 9, 10, 11, 12, 14, 15, 16]:
+        elif sequence__ in [3, 4, 5, 8, 9, 10, 11, 12]:
             patch_data_ = {
                 'depend_at_least_one': [],
-                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list if info_['sequence'] == 2],
-                'depend_optional': []
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [2]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [13]]
             }
-        elif sequence__ == 7:
+        elif sequence__ in [6]:
             patch_data_ = {
                 'depend_at_least_one': [],
-                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list if info_['sequence'] == 6],
-                'depend_optional': []
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [2]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [7]]
             }
-        elif sequence__ == 13:
+        elif sequence__ in [7]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [6]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [13]]
+            }
+        elif sequence__ in [13]:
             patch_data_ = {
                 'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
                                         if info_['sequence'] in [3, 4, 5, 7, 8, 9, 10, 11, 12]],
                 'depend_have_to': [],
-                'depend_optional': []
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [17, 18, 19]]
+            }
+        elif sequence__ in [14, 15, 16]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [2]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [17, 18, 19]]
             }
         elif sequence__ in [17, 18, 19]:
             patch_data_ = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] == 13],
+                                   if info_['sequence'] in [13]],
                 'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
                                     if info_['sequence'] in [14, 15, 16]],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [20]]
             }
-        elif sequence__ == 20:
+        elif sequence__ in [20]:
             patch_data_ = {
                 'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
                                         if info_['sequence'] in [17, 18, 19]],
                 'depend_have_to': [],
-                'depend_optional': []
+                'depend_optional': [],
+                'depend_must_undone': []
             }
 
         return patch_data_
