@@ -1,4 +1,4 @@
-django==2.2.12
+django==2.2.13
 djangorestframework==3.11.0
 pipdeptree==0.13.2
 
