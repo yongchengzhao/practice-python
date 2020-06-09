@@ -944,7 +944,11 @@ def init_procedure_sequence():
     headers = {'content-type': 'application/json'}
     depend_at_least_one, depend_have_to, depend_optional, depend_must_undone = [], [], [], []
     unit_type = 'yylmgms_yyl'
-    data_list = data_list_yylmgms_yyl
+    data_list = {
+        'hntgc': data_list_hntgc,
+        'yylmgms_zk': data_list_yylmgms_zk,
+        'yylmgms_yyl': data_list_yylmgms_yyl
+    }.get(unit_type)
 
     for name in data_list:
         sequence = data_list.index(name) + 1
