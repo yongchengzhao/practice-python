@@ -884,38 +884,54 @@ def test_write():
 
 
 def init_procedure_sequence():
+    # 混凝土工程
+    # data_list = [
+    #     '混凝土建基面验收联合检验签证表',
+    #     '基础面或混凝土施工缝处理工序验收及质量评定表',
+    #     '混凝土模板工序验收及质量评定表',
+    #     '混凝土滑模工序验收及质量评定表',
+    #     '清水混凝土模板工序验收及质量评定表',
+    #     '钢筋接头现场验收合格证',
+    #     '混凝土钢筋工序验收及质量评定表',
+    #     '止水片（带）安装验收及质量评定表',
+    #     '排水设施安装质量评定表',
+    #     '铁件安装验收及质量评定表',
+    #     '混凝土浇筑前仓内重要结构埋件联合验收单',
+    #     '伸缩缝材料安装验收及质量评定表',
+    #     '混凝土（开工、仓）申请（许可）单',
+    #     '冷却及接缝灌浆管路安装验收及质量评定表',
+    #     '混凝土工程冷却水管通水检查记录表',
+    #     '预埋件工序安装质量评定表',
+    #     '混凝土外观质量评定表',
+    #     '清水混凝土外观质量评定表',
+    #     '混凝土浇筑工序质量检验签证表',
+    #     '混凝土单元工程质量评定表'
+    # ]
+
+    # 预应力锚杆锚索-中孔锚索工序顺序
     data_list = [
-        '混凝土建基面验收联合检验签证表',
-        '基础面或混凝土施工缝处理工序验收及质量评定表',
-        '混凝土模板工序验收及质量评定表',
-        '混凝土滑模工序验收及质量评定表',
-        '清水混凝土模板工序验收及质量评定表',
-        '钢筋接头现场验收合格证',
-        '混凝土钢筋工序验收及质量评定表',
-        '止水片（带）安装验收及质量评定表',
-        '排水设施安装质量评定表',
-        '铁件安装验收及质量评定表',
-        '混凝土浇筑前仓内重要结构埋件联合验收单',
-        '伸缩缝材料安装验收及质量评定表',
-        '混凝土（开工、仓）申请（许可）单',
-        '冷却及接缝灌浆管路安装验收及质量评定表',
-        '混凝土工程冷却水管通水检查记录表',
-        '预埋件工序安装质量评定表',
-        '混凝土外观质量评定表',
-        '清水混凝土外观质量评定表',
-        '混凝土浇筑工序质量检验签证表',
-        '混凝土单元工程质量评定表'
+        '混凝土结构锚索管道安装质量检验签证表',
+        '混凝土结构预应力锚索制作安装工序质量检验签证表',
+        '混凝土结构预应力锚索张拉作业申请（许可）表',
+        '混凝土结构预应力锚索张拉预紧记录表',
+        '混凝土结构预应力锚索整体张拉记录表',
+        '混凝土结构预应力锚索张拉作业工序质量检验签证表（主锚索，3800kN）',
+        '混凝土结构预应力锚索张拉作业工序质量检验签证表（次锚索，2400kN）',
+        '混凝土结构预应力锚索注浆工序质量检验签证表',
+        '混凝土结构预应力锚索单元工程质量等级评定表',
     ]
 
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
     headers = {'content-type': 'application/json'}
+    depend_at_least_one, depend_have_to, depend_optional, depend_must_undone = [], [], [], []
+    unit_type = 'yylmgms_zk'
+
     for name in data_list:
         sequence = data_list.index(name) + 1
-        depend_at_least_one, depend_have_to, depend_optional, depend_must_undone = [], [], [], []
         post_data = {
             'name': name,
             'sequence': sequence,
-            'unit_type': 'yylmgms_zk',
+            'unit_type': unit_type,
             'depend_at_least_one': depend_at_least_one,
             'depend_have_to': depend_have_to,
             'depend_optional': depend_optional,
@@ -937,11 +953,11 @@ def delete_all_procedure_sequence():
 
 def process_procedure_sequence_dependency():
 
-    def get_procedure_sequence_info_by_sequence(sequence_: int) -> dict:
-        query_url = f'{base_url}?unit_type=hntgc&sequence={sequence_}'
+    def get_procedure_sequence_info_by_sequence(sequence_: int, unit_type_: str) -> dict:
+        query_url = f'{base_url}?unit_type={unit_type_}&sequence={sequence_}'
         return json.loads(requests.get(url=query_url).content.decode('utf-8'))[0]
 
-    def get_patch_data_by_sequence(sequence__: int) -> dict:
+    def get_patch_data_by_sequence_hntgc(sequence__: int) -> dict:
         patch_data_ = {}
 
         if sequence__ in [1]:
@@ -1027,13 +1043,94 @@ def process_procedure_sequence_dependency():
 
         return patch_data_
 
+    def get_patch_data_by_sequence_yylmgms_zk(sequence__: int) -> dict:
+        patch_data_ = {}
+
+        if sequence__ in [1]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [2]]
+            }
+        elif sequence__ in [2]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                    if info_['sequence'] in [1]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [3]]
+            }
+        elif sequence__ in [3]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [2]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [4]]
+            }
+        elif sequence__ in [4]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [3]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [5]]
+            }
+        elif sequence__ in [5]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [4]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [6, 7]]
+            }
+        elif sequence__ in [6, 7]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                        if info_['sequence'] in [5]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [8]]
+            }
+        elif sequence__ in [8]:
+            patch_data_ = {
+                'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [6, 7]],
+                'depend_have_to': [],
+                'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [6, 7]],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [9]]
+            }
+        elif sequence__ in [9]:
+            patch_data_ = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [8]],
+                'depend_optional': [],
+                'depend_must_undone': []
+            }
+
+        return patch_data_
+
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
-    procedure_sequence_info_list = [get_procedure_sequence_info_by_sequence(i) for i in range(1, 21)]
+    unit_type = 'yylmgms_zk'
+    max_sequence = 9
+
+    procedure_sequence_info_list = [get_procedure_sequence_info_by_sequence(i, unit_type)
+                                    for i in range(1, max_sequence + 1)]
     # print(procedure_sequence_info_list)
 
     for info in procedure_sequence_info_list:
         sequence = info.get('sequence')
-        patch_data = get_patch_data_by_sequence(sequence)
+        patch_data = get_patch_data_by_sequence_yylmgms_zk(sequence)
 
         patch_url = f'{base_url}{info["id"]}/'
         res = requests.patch(url=patch_url, data=patch_data)
