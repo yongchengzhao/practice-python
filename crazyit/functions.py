@@ -911,15 +911,18 @@ def init_procedure_sequence():
     headers = {'content-type': 'application/json'}
     for name in data_list:
         sequence = data_list.index(name) + 1
-        depend_on = []
+        depend_at_least_one, depend_have_to, depend_optional, depend_must_undone = [], [], [], []
         post_data = {
             'name': name,
             'sequence': sequence,
-            'unit_type': 'hntgc',
-            'depend_on': depend_on
+            'unit_type': 'yylmgms_zk',
+            'depend_at_least_one': depend_at_least_one,
+            'depend_have_to': depend_have_to,
+            'depend_optional': depend_optional,
+            'depend_must_undone': depend_must_undone
         }
         res = requests.post(url=base_url, data=json.dumps(post_data), headers=headers)
-        print(data_list.index(name) + 1, res.status_code, res.content.decode('utf-8'))
+        print(sequence, res.status_code, res.content.decode('utf-8'))
 
 
 def delete_all_procedure_sequence():
