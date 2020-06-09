@@ -1309,6 +1309,18 @@ def test_date_parse():
     print(max(sign_time_list).strftime('%Y-%m-%d'))
 
 
+def test_modify_file_name():
+    directory = 'E:/Adam/audio/audiobook/adam'
+
+    filename_list = os.listdir(directory)
+
+    for filename in filename_list:
+        if 'xxx' in filename:
+            old_path = os.path.join(directory, filename)
+            new_path = os.path.join(directory, filename.replace('MP3', 'mp3'))
+            os.renames(old_path, new_path)
+
+
 def test():
     print(f'test')
 
