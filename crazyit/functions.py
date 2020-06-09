@@ -1253,7 +1253,11 @@ def process_procedure_sequence_dependency():
     # base_url = 'http://10.215.160.41:8000/main/api/procedure_sequence/'
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
     unit_type = 'yylmgms_yyl'
-    max_sequence = 14
+    max_sequence = {
+        'hntgc': 20,
+        'yylmgms_zk': 9,
+        'yylmgms_yyl': 14
+    }.get(unit_type)
     get_patch_data_func = {
         'hntgc': get_patch_data_by_sequence_hntgc,
         'yylmgms_zk': get_patch_data_by_sequence_yylmgms_zk,
