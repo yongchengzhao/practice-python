@@ -968,10 +968,10 @@ def init_procedure_sequence():
 def delete_all_procedure_sequence():
     # base_url = 'http://10.215.160.41:8000/main/api/procedure_sequence/'
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
-    unit_type = 'hntgc'
+    unit_type = 'yylmgms_yyl'
     url = f'{base_url}?unit_type={unit_type}'
 
-    procedure_sequence_info_list = json.loads(requests.get(url=base_url).content)
+    procedure_sequence_info_list = json.loads(requests.get(url=url).content)
 
     for info in procedure_sequence_info_list:
         del_url = f'{base_url}{info.get("id")}/'
