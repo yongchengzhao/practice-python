@@ -921,6 +921,7 @@ def init_procedure_sequence():
         '混凝土结构预应力锚索单元工程质量等级评定表',
     ]
 
+    # base_url = 'http://10.215.160.41:8000/main/api/procedure_sequence/'
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
     headers = {'content-type': 'application/json'}
     depend_at_least_one, depend_have_to, depend_optional, depend_must_undone = [], [], [], []
@@ -942,6 +943,7 @@ def init_procedure_sequence():
 
 
 def delete_all_procedure_sequence():
+    # base_url = 'http://10.215.160.41:8000/main/api/procedure_sequence/'
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
     procedure_sequence_info_list = json.loads(requests.get(url=base_url).content)
 
@@ -1120,6 +1122,7 @@ def process_procedure_sequence_dependency():
 
         return patch_data_
 
+    # base_url = 'http://10.215.160.41:8000/main/api/procedure_sequence/'
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
     unit_type = 'yylmgms_zk'
     max_sequence = 9
