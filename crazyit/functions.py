@@ -921,12 +921,30 @@ def init_procedure_sequence():
         '混凝土结构预应力锚索单元工程质量等级评定表',
     ]
 
+    # 预应力锚杆锚索-预应力锚索工序顺序
+    data_list_yylmgms_yyl = [
+        '锚索造孔工序验收及质量评定表',
+        '预应力锚索编制合格证',
+        '预应力锚索管道安装验收及质量评定表',
+        '预应力锚索制作安装工序验收及质量评定表',
+        '预应力锚索注浆作业申请（许可）单',
+        '预应力锚索注浆工序验收及质量评定表',
+        '预应力锚索锚墩混凝土验收及质量评定表',
+        '预应力锚索张拉作业申请（许可）单',
+        '锚索单循环验收试验张拉记录表',
+        '锚索张拉预紧及整体张拉记录表',
+        '锚索（端头锚）张拉工序验收及质量评定表',
+        '锚索（对穿锚）张拉工序验收及质量评定表',
+        '预应力锚索外锚头验收及质量评定表',
+        '预应力锚索单元（单束）工程质量评定表',
+    ]
+
     # base_url = 'http://10.215.160.41:8000/main/api/procedure_sequence/'
     base_url = 'http://localhost:18006/main/api/procedure_sequence/'
     headers = {'content-type': 'application/json'}
     depend_at_least_one, depend_have_to, depend_optional, depend_must_undone = [], [], [], []
-    unit_type = 'yylmgms_zk'
-    data_list = data_list_yylmgms_zk
+    unit_type = 'yylmgms_yyl'
+    data_list = data_list_yylmgms_yyl
 
     for name in data_list:
         sequence = data_list.index(name) + 1
