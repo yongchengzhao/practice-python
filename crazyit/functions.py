@@ -315,13 +315,17 @@ def test_multi_threading():
 
 
 def test_range():
+    """
+    练习 range() 内置函数。
+    :return:
+    """
     for i in range(0, 10, 2):
         print(i)
 
 
 def test_conversion_of_number_system():
     """
-    16 进制转换
+    练习进制转换。
     @return:
     """
     print(int('10'))
@@ -344,6 +348,13 @@ def test_conversion_of_number_system():
 
 
 def calculate_compound(principal, annual_interest_rate, years):
+    """
+    计算本利和。
+    :param principal: 本金。
+    :param annual_interest_rate: 年利率。
+    :param years: 年数。
+    :return:
+    """
     amount = principal
     for i in range(1, years + 1):
         amount *= (1 + annual_interest_rate)
@@ -351,11 +362,19 @@ def calculate_compound(principal, annual_interest_rate, years):
 
 
 def test_dir():
+    """
+    练习操作文件夹。
+    :return:
+    """
     path = './2020-01-14'
     shutil.rmtree(path, ignore_errors=True)
 
 
 def test_timestamp():
+    """
+    练习时间戳。
+    :return:
+    """
     print(datetime.datetime.timestamp(datetime.datetime.now()))
     print(time.time())
     print(int(time.time() * 10 ** 3))
@@ -364,6 +383,10 @@ def test_timestamp():
 
 
 def test_f():
+    """
+    练习 f 声明。
+    :return:
+    """
     pp = [2, 3, 4]
     print(f'This line is too long for the format, it may be cut to 2 lines. Is it?                               pp is '
           f'{pp}')
@@ -382,6 +405,10 @@ this is a f string, dc is {dc}
 
 
 def test_exception():
+    """
+    练习异常。
+    :return:
+    """
     try:
         print('try')
         raise IndexError
@@ -394,6 +421,19 @@ def test_exception():
 
 
 def test_dict():
+    """
+    练习字典。
+    :return:
+    """
+
+    def update_gender(dd):
+        """
+        更新 gender。
+        :param dd:
+        :return:
+        """
+        dd.update(gender='female')
+
     dd = {'kw': 'kw', 'zl': 'zl', 'zcy': 'zcy'}
     print(dd, 'original')
 
@@ -419,11 +459,11 @@ def test_dict():
         print(item)
 
 
-def update_gender(dd):
-    dd.update(gender='female')
-
-
 def test_none():
+    """
+    练习 None。
+    :return:
+    """
     # print(0 == None)
     # print('' == None)
     print(len(''))
@@ -442,6 +482,10 @@ def test_none():
 
 
 def test_dict_update():
+    """
+    练习更新字典。
+    :return:
+    """
     dic = {}
     print(dic)
     dic.update(name='Adam')
@@ -452,34 +496,11 @@ def test_dict_update():
     print(dic)
 
 
-def calculate_card_date():
-    year = 2020
-    start_month = 3
-    end_month = 12
-    card_info_dict = {
-        '平安': {'bill_day': 3, 'days': 17},
-        '浦发': {'bill_day': 10, 'days': 19},
-        '招商': {'bill_day': 10, 'days': 17},
-        '上海': {'bill_day': 12, 'days': 24},
-        '广发': {'bill_day': 15, 'days': 19},
-        '光大': {'bill_day': 16, 'days': 18},
-        '晓阳': {'bill_day': 16, 'days': 18},
-        '中信': {'bill_day': 18, 'days': 18},
-    }
-
-    for key, value in card_info_dict.items():
-
-        for i in range(start_month, end_month + 1):
-            print(f'{year}-{i}，{key}：')
-            bill_date = datetime.date(year, i, value.get('bill_day'))
-            next_bill_date = datetime.date(year, i + 1 if (i + 1) < 13 else (i + 1) - 12, value.get('bill_day'))
-            last_date = bill_date + datetime.timedelta(days=value.get('days') + 1)
-            print(f'bill_date: {bill_date}')
-            print(f'last_date: {last_date}')
-            print(f'next_bill_date: {next_bill_date}')
-
-
 def test_time_delta():
+    """
+    练习时间差 timedelta。
+    :return:
+    """
     today_datetime = datetime.datetime.today()
     print(f'today_datetime: {today_datetime}')
     date = datetime.date(2020, 3, 10)
@@ -496,6 +517,10 @@ def test_time_delta():
 
 
 def test_format():
+    """
+    练习字符串格式化。
+    :return:
+    """
     dic = [
         {
             "id": 3,
@@ -514,6 +539,10 @@ def test_format():
 
 
 def test_time_format():
+    """
+    练习时间格式化。
+    :return:
+    """
     today = datetime.datetime.today()
     ss = today.strftime('%Y-%m')
     year_month = today.strftime('%Y-%m').split('-')
@@ -525,6 +554,10 @@ def test_time_format():
 
 
 def test_ftp():
+    """
+    练习 ftp。
+    :return:
+    """
     with ftplib.FTP(host='58.87.98.108') as ftp:
         ftp.login(user='unis', passwd='unis1234')
         # ftp.set_pasv(False)
@@ -548,6 +581,10 @@ def test_ftp():
 
 
 def test_list_add():
+    """
+    练习列表的添加。
+    :return:
+    """
     ll = [1]
     lll = [3, 4, 5]
     print(ll)
@@ -560,6 +597,10 @@ def test_list_add():
 
 
 def test_list_reduce():
+    """
+    练习列表间的差集。
+    :return:
+    """
     subtrahend = [
             'id', 'name', 'unit', 'segment', 'discipline', 'unit_project', 'station_scope', 'elevation_scope',
                   'work_package_code', 'construction_start', 'construction_end', 'pass_percent', 'quality_level',
@@ -588,6 +629,10 @@ def test_list_reduce():
 
 
 def test_str():
+    """
+    练习操作字符串。
+    :return:
+    """
     ss = '012345'
     print(ss[2])  # 2
 
@@ -603,17 +648,29 @@ def test_str():
 
 
 def test_sys():
+    """
+    练习 sys 模块。
+    :return:
+    """
     print(sys.version)
     print(sys.version_info)
 
 
 def test_response_status():
+    """
+    练习响应码。
+    :return:
+    """
     res = Response('test')
     print(res.status_code)
     print(res.data)
 
 
 def test_type():
+    """
+    练习 type() 内置函数。
+    :return:
+    """
     ff = 1.2
     print(f'type(ff): {type(ff)}')
     print(f'type(type(ff)): {type(type(ff))}')
@@ -621,6 +678,10 @@ def test_type():
 
 
 def test_out_index_error():
+    """
+    练习索引错误。
+    :return:
+    """
     ll = [0, 1, 2]
     print(ll[2])
 
