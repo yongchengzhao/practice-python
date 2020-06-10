@@ -1320,6 +1320,16 @@ def test_modify_file_name():
             new_path = os.path.join(directory, filename.replace('MP3', 'mp3'))
             os.renames(old_path, new_path)
 
+def process_baidu_dir():
+    """
+    根据提供的百度原始数据在本地新建文件夹目录结构。
+    :return:
+    """
+    raw_data_list = []
+    for raw_data in raw_data_list:
+        absolute_path = '.' + raw_data.get('path', '')
+        os.makedirs(absolute_path, exist_ok=True)
+
 
 def test():
     print(f'test')
