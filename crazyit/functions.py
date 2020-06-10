@@ -1424,7 +1424,19 @@ def process_baidu_dir():
     for raw_data in raw_data_list:
         absolute_path = '.' + raw_data.get('path', '')
         os.makedirs(absolute_path, exist_ok=True)
+        
 
+def test_out_of_memory():
+    """
+    测试内存溢出。
+    :return:
+    """
+    ll = []
+    # 修改 range() 函数内的值来修改占用内存大小。改成 100000000 后跑了一下，没有报内存溢出，电脑内存占用飙到 100%，电脑卡死。
+    # 最后不得不强制关机重启。
+    for i in range(10):
+        print(i)
+        ll.append("new string" + f'{i}')
 
 def test():
     print(f'test')
@@ -1432,4 +1444,4 @@ def test():
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test()
+    test_out_of_memory()
