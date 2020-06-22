@@ -1166,11 +1166,11 @@ def process_procedure_sequence_dependency():
 
         return patch_data_
 
-    def get_patch_data_by_sequence_yylmgms_zk(sequence__: int) -> dict:
-        patch_data_ = {}
+    def get_patch_data_by_sequence_yylmgms_zk_10(sequence__: int) -> dict:
+        patch_data_10 = {}
 
         if sequence__ in [1]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [],
                 'depend_optional': [],
@@ -1178,7 +1178,7 @@ def process_procedure_sequence_dependency():
                                        if info_['sequence'] in [2]]
             }
         elif sequence__ in [2]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
                                     if info_['sequence'] in [1]],
@@ -1187,7 +1187,7 @@ def process_procedure_sequence_dependency():
                                        if info_['sequence'] in [3]]
             }
         elif sequence__ in [3]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
                                    if info_['sequence'] in [2]],
@@ -1196,7 +1196,7 @@ def process_procedure_sequence_dependency():
                                        if info_['sequence'] in [4]]
             }
         elif sequence__ in [4]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
                                    if info_['sequence'] in [3]],
@@ -1205,7 +1205,7 @@ def process_procedure_sequence_dependency():
                                        if info_['sequence'] in [5]]
             }
         elif sequence__ in [5]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
                                    if info_['sequence'] in [4]],
@@ -1214,7 +1214,7 @@ def process_procedure_sequence_dependency():
                                        if info_['sequence'] in [6, 7]]
             }
         elif sequence__ in [6, 7]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
                                         if info_['sequence'] in [5]],
@@ -1223,7 +1223,7 @@ def process_procedure_sequence_dependency():
                                        if info_['sequence'] in [8]]
             }
         elif sequence__ in [8]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
                                    if info_['sequence'] in [6, 7]],
                 'depend_have_to': [],
@@ -1233,7 +1233,7 @@ def process_procedure_sequence_dependency():
                                        if info_['sequence'] in [9]]
             }
         elif sequence__ in [9]:
-            patch_data_ = {
+            patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
                                    if info_['sequence'] in [8]],
@@ -1241,7 +1241,66 @@ def process_procedure_sequence_dependency():
                 'depend_must_undone': []
             }
 
-        return patch_data_
+        return patch_data_10
+
+    def get_patch_data_by_sequence_yylmgms_zk_20(sequence__: int) -> dict:
+        patch_data_20 = {}
+
+        if sequence__ in [1]:
+            patch_data_20 = {
+                'depend_at_least_one': [],
+                'depend_have_to': [],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [2]]
+            }
+        elif sequence__ in [2]:
+            patch_data_20 = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [1]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [3]]
+            }
+        elif sequence__ in [3]:
+            patch_data_20 = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [2]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [6, 7]]
+            }
+        elif sequence__ in [6, 7]:
+            patch_data_20 = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [3]],
+                'depend_optional': [],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [8]]
+            }
+        elif sequence__ in [8]:
+            patch_data_20 = {
+                'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
+                                        if info_['sequence'] in [6, 7]],
+                'depend_have_to': [],
+                'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
+                                    if info_['sequence'] in [6, 7]],
+                'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
+                                       if info_['sequence'] in [9]]
+            }
+        elif sequence__ in [9]:
+            patch_data_20 = {
+                'depend_at_least_one': [],
+                'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
+                                   if info_['sequence'] in [8]],
+                'depend_optional': [],
+                'depend_must_undone': []
+            }
+
+        return patch_data_20
 
     def get_patch_data_by_sequence_yylmgms_yyl(sequence__: int) -> dict:
         patch_data_ = {}
@@ -1358,7 +1417,7 @@ def process_procedure_sequence_dependency():
     }.get(unit_type)
     get_patch_data_func = {
         'hntgc': get_patch_data_by_sequence_hntgc,
-        'yylmgms_zk': get_patch_data_by_sequence_yylmgms_zk,
+        'yylmgms_zk': get_patch_data_by_sequence_yylmgms_zk_20,
         'yylmgms_yyl': get_patch_data_by_sequence_yylmgms_yyl
     }.get(unit_type)
 
@@ -1438,10 +1497,27 @@ def test_out_of_memory():
         print(i)
         ll.append("new string" + f'{i}')
 
+
+def test_multi_thread_do_request():
+
+    def do_request(thread_num, url_):
+        print(f'do_request')
+        res = requests.get(url=url_)
+        print(res)
+        print(thread_num, res.status_code)
+
+    thread_amount = 100
+    url = f'https://www.csdn.net/'
+
+    for i in range(thread_amount):
+        print(i)
+        thread = _thread.start_new_thread(do_request, (i, url))
+
+
 def test():
     print(f'test')
 
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_out_of_memory()
+    process_procedure_sequence_dependency()
