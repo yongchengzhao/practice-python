@@ -1474,6 +1474,7 @@ def test_modify_file_name():
             new_path = os.path.join(directory, filename.replace('MP3', 'mp3'))
             os.renames(old_path, new_path)
 
+
 def process_baidu_dir():
     """
     根据提供的百度原始数据在本地新建文件夹目录结构。
@@ -1514,10 +1515,20 @@ def test_multi_thread_do_request():
         thread = _thread.start_new_thread(do_request, (i, url))
 
 
+def test_tuple():
+    tup = tuple()
+    print(tup)
+    print(type(tup))
+
+    tup2 = ()
+    print(tup2)
+    print(type(tup2))
+
+
 def test():
     print(f'test')
 
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    process_procedure_sequence_dependency()
+    test()
