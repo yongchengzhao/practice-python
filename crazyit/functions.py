@@ -1462,6 +1462,16 @@ def test_date_parse():
     print(min(sign_time_list).strftime('%Y-%m-%d'))
     print(max(sign_time_list).strftime('%Y-%m-%d'))
 
+    print(datetime.datetime.now())
+    print(datetime.datetime.now() + datetime.timedelta(hours=8))
+    print((datetime.datetime.now() + datetime.timedelta(hours=8)).strftime('%Y%m%d%H%M%S%f')[:-3])
+
+    print(11111111111111111111111111)
+    print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(os.path.getatime('models.py'))))
+    print(time.localtime(os.path.getatime('models.py')))
+    print(os.path.getatime('models.py'))
+    print(datetime.datetime.fromtimestamp(os.path.getatime('models.py')) + datetime.timedelta(hours=8))
+
 
 def test_modify_file_name():
     directory = 'E:/Adam/audio/audiobook/adam'
@@ -1531,4 +1541,4 @@ def test():
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test()
+    test_date_parse()
