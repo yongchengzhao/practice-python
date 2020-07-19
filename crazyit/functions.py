@@ -1539,6 +1539,47 @@ def test():
     print(f'test')
 
 
+def check_sjc_data_binary_search():
+    start = 4922
+    end = 5000
+
+    res_end = requests.get(url=f'http://10.218.8.32:8000/api/simplewpcellist/?page=1&pagesize={end}')
+    if res_end.status_code == 200:
+        print(f'end: {end}, res.status_code: {res_end.status_code}')
+        return
+
+    while True:
+        temp = round((start + end) / 2)
+        url = f'http://10.218.8.32:8000/api/simplewpcellist/?page=1&pagesize={temp}'
+        res = requests.get(url=url)
+        print(f'temp: {temp}, res.status_code: {res.status_code}')
+
+        if res.status_code == 200:
+            start = temp
+        else:
+            print(f'res.content: {res.content.decode("utf-8")}')
+            end = temp
+
+        if end - start == 1:
+            print(f'start: {start}, end: {end}')
+            break
+
+
+def check_sjc_data_one_by_one():
+    """
+    小范围内一个个查看状态。
+    :return:
+    """
+    start = 4920
+    end = 4930
+
+    for page in range(start, end + 1):
+        url = f'http://10.218.8.32:8000/api/simplewpcellist/?page={page}&pagesize=1'
+        res = requests.get(url=url)
+
+        print(f'page: {page}, res.status_code: {res.status_code}, res.content: {res.content.decode("utf-8")}')
+
+
 if __name__ == '__main__':
     print(f'----------main----------')
     test_date_parse()
