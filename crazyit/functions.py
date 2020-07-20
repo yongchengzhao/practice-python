@@ -1535,8 +1535,18 @@ def test_tuple():
     print(type(tup2))
 
 
-def test():
-    print(f'test')
+def test_sort():
+    ll = ['input0', 'input3', 'input7', 'input10', 'input19', 'input23']
+    print(f'll: {ll}')
+    ll.sort()
+    print(f'll: {ll}')
+
+    lll = []
+    for l in ll:
+        lll.append(int(l.replace('input', '')))
+    print(f'lll: {lll}')
+    lll.sort()
+    print(f'lll: {lll}')
 
 
 def check_sjc_data_binary_search():
@@ -1580,18 +1590,8 @@ def check_sjc_data_one_by_one():
         print(f'page: {page}, res.status_code: {res.status_code}, res.content: {res.content.decode("utf-8")}')
 
 
-def test_sort():
-    ll = ['input0', 'input3', 'input7', 'input10', 'input19', 'input23']
-    print(f'll: {ll}')
-    ll.sort()
-    print(f'll: {ll}')
-
-    lll = []
-    for l in ll:
-        lll.append(int(l.replace('input', '')))
-    print(f'lll: {lll}')
-    lll.sort()
-    print(f'lll: {lll}')
+def test():
+    print(f'test')
 
 
 if __name__ == '__main__':
