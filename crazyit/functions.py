@@ -1550,44 +1550,67 @@ def test_sort():
 
 
 def check_sjc_data_binary_search():
-    start = 4922
-    end = 5000
+    """
+    使用二分法查找错误数据。
+    :return:
+    """
 
+    print(datetime.datetime.now())
+    # 需手动输入范围
+    start = 10000
+    end = 12000
+
+    # 如果最后一个没有问题，说明范围内都没有问题，直接 return 掉。
     res_end = requests.get(url=f'http://10.218.8.32:8000/api/simplewpcellist/?page=1&pagesize={end}')
     if res_end.status_code == 200:
         print(f'end: {end}, res.status_code: {res_end.status_code}')
         return
 
+    # 使用二分法定位错误的那个
     while True:
+        print(datetime.datetime.now(), end='\t')
         temp = round((start + end) / 2)
         url = f'http://10.218.8.32:8000/api/simplewpcellist/?page=1&pagesize={temp}'
         res = requests.get(url=url)
-        print(f'temp: {temp}, res.status_code: {res.status_code}')
+        print(f'temp: {temp}, res.status_code: {res.status_code}, ', end='')
 
         if res.status_code == 200:
             start = temp
+            print()
         else:
-            print(f'res.content: {res.content.decode("utf-8")}')
             end = temp
+            print(f'res.content: {res.content.decode("utf-8")}')
 
+        # 正确的和错误的相邻，即定位到了错误的那个
         if end - start == 1:
-            print(f'start: {start}, end: {end}')
+            print(f'start: {start}, end: {end}, error: {end}')
             break
 
+    # 从最后一个正确的向后查找 10 个，因为可能有好几个连续错误
+    check_sjc_data_one_by_one(start, start + 10)
 
-def check_sjc_data_one_by_one():
+
+def check_sjc_data_one_by_one(start: int, end: int):
     """
     小范围内一个个查看状态。
     :return:
     """
-    start = 4920
-    end = 4930
+    error_list = []
 
     for page in range(start, end + 1):
         url = f'http://10.218.8.32:8000/api/simplewpcellist/?page={page}&pagesize=1'
         res = requests.get(url=url)
 
-        print(f'page: {page}, res.status_code: {res.status_code}, res.content: {res.content.decode("utf-8")}')
+        outer = f'page: {page}, res.status_code: {res.status_code}, res.content: {res.content.decode("utf-8")}'
+        print(outer)
+        print(outer, file=open('res3.log', mode='a+'))
+
+        if res.status_code != 200:
+            error_list.append(page)
+
+        outer_error = f'error_list: {error_list}'
+        print(outer_error)
+        print(outer_error, file=open('res3.log', mode='a+'))
 
 
 def test():
@@ -1596,4 +1619,4 @@ def test():
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_date_parse()
+    test()
