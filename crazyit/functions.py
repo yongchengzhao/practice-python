@@ -426,18 +426,18 @@ def test_dict():
     :return:
     """
 
-    def update_gender(dd):
+    def update_gender(dd_):
         """
         更新 gender。
-        :param dd:
+        :param dd_:
         :return:
         """
-        dd.update(gender='female')
+        dd_.update(gender='female')
 
     dd = {'kw': 'kw', 'zl': 'zl', 'zcy': 'zcy'}
     print(dd, 'original')
 
-    # for key, value in dd.items():
+    # for key, value in dd_.items():
     #     print(key, value)
 
     dd['zcy'] = 'Adam'
@@ -1181,7 +1181,7 @@ def process_procedure_sequence_dependency():
             patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
-                                    if info_['sequence'] in [1]],
+                                   if info_['sequence'] in [1]],
                 'depend_optional': [],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
                                        if info_['sequence'] in [3]]
@@ -1217,7 +1217,7 @@ def process_procedure_sequence_dependency():
             patch_data_10 = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
-                                        if info_['sequence'] in [5]],
+                                   if info_['sequence'] in [5]],
                 'depend_optional': [],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
                                        if info_['sequence'] in [8]]
@@ -1225,10 +1225,10 @@ def process_procedure_sequence_dependency():
         elif sequence__ in [8]:
             patch_data_10 = {
                 'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [6, 7]],
+                                        if info_['sequence'] in [6, 7]],
                 'depend_have_to': [],
                 'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [6, 7]],
+                                    if info_['sequence'] in [6, 7]],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
                                        if info_['sequence'] in [9]]
             }
@@ -1317,9 +1317,9 @@ def process_procedure_sequence_dependency():
             patch_data_ = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
-                                    if info_['sequence'] in [1, 2]],
+                                   if info_['sequence'] in [1, 2]],
                 'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
-                                       if info_['sequence'] in [3]],
+                                    if info_['sequence'] in [3]],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
                                        if info_['sequence'] in [5, 7]]
             }
@@ -1354,7 +1354,7 @@ def process_procedure_sequence_dependency():
             patch_data_ = {
                 'depend_at_least_one': [],
                 'depend_have_to': [info_.get('id') for info_ in procedure_sequence_info_list
-                                        if info_['sequence'] in [6, 7]],
+                                   if info_['sequence'] in [6, 7]],
                 'depend_optional': [],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
                                        if info_['sequence'] in [9, 10]]
@@ -1371,12 +1371,12 @@ def process_procedure_sequence_dependency():
         elif sequence__ in [10]:
             patch_data_ = {
                 'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [8, 9]],
+                                        if info_['sequence'] in [8, 9]],
                 'depend_have_to': [],
                 'depend_optional': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [9]],
+                                    if info_['sequence'] in [9]],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [11, 12]]
+                                       if info_['sequence'] in [11, 12]]
             }
         elif sequence__ in [11, 12]:
             patch_data_ = {
@@ -1385,16 +1385,16 @@ def process_procedure_sequence_dependency():
                                    if info_['sequence'] in [10]],
                 'depend_optional': [],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [13]]
+                                       if info_['sequence'] in [13]]
             }
         elif sequence__ in [13]:
             patch_data_ = {
                 'depend_at_least_one': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [11, 12]],
+                                        if info_['sequence'] in [11, 12]],
                 'depend_have_to': [],
                 'depend_optional': [],
                 'depend_must_undone': [info_.get('id') for info_ in procedure_sequence_info_list
-                                   if info_['sequence'] in [14]]
+                                       if info_['sequence'] in [14]]
             }
         elif sequence__ in [14]:
             patch_data_ = {
@@ -1522,7 +1522,7 @@ def test_multi_thread_do_request():
 
     for i in range(thread_amount):
         print(i)
-        thread = _thread.start_new_thread(do_request, (i, url))
+        _thread.start_new_thread(do_request, (i, url))
 
 
 def test_tuple():
