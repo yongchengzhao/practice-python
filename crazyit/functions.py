@@ -1613,6 +1613,15 @@ def check_sjc_data_one_by_one(start: int, end: int):
         print(outer_error, file=open('res3.log', mode='a+'))
 
 
+def test_args_collection():
+
+    def do_collect(*args):
+        for arg in args:
+            print(f'arg: {arg}')
+
+    do_collect(1, 2, 'd', f'23{time.time()}', 10 ** 3)
+
+
 def test():
     print(f'test')
 
