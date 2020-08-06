@@ -1622,6 +1622,101 @@ def test_args_collection():
     do_collect(1, 2, 'd', f'23{time.time()}', 10 ** 3)
 
 
+def test_process_dir(src_):
+    """
+    处理第一层文件夹
+    :param src_:
+    :return:
+    """
+    print(f'----------------------------------------------test_process_dir')
+    if not src_:
+        return
+
+    for path in os.listdir(path=src_):
+        abs_path = os.path.join(src_, path)
+
+        if os.path.isfile(abs_path):
+            continue
+
+        path_list = path.split('.')
+        if len(path_list) < 2:
+            continue
+
+        dest_path = os.path.join(src_, *path_list)
+        os.makedirs(dest_path, exist_ok=True)
+        print(f'dest_path: {dest_path}')
+
+        for file_ in os.listdir(path=abs_path):
+            shutil.move(os.path.join(abs_path, file_), dest_path)
+
+
+def test_process_parent_dir(src_):
+    """
+    去掉 16 进制文件夹那一层
+    :param src_:
+    :return:
+    """
+    print(f'----------------------------------------------test_process_parent_dir')
+    if not src_:
+        return
+
+    for top, dirs, nondirs in os.walk(src_):
+        for file_ in nondirs:
+            file_path = os.path.join(top, file_)
+
+            # 获取父级文件夹名称
+            pardir_name = os.path.abspath(os.path.join(file_path, os.pardir)).split('\\')[-1]
+
+            try:
+                temp = int(f'0x{pardir_name}', 16)
+            except:
+                continue
+
+            dest = file_path.replace(f'\\{pardir_name}', '')
+            shutil.move(file_path, dest)
+            print(f'dest: {dest}')
+
+
+def test_delete_hex_dirs(src_):
+    """
+    清除 16 进制空文件夹
+    :param src_:
+    :return:
+    """
+    print(f'----------------------------------------------test_delete_hex_dirs')
+    if not src_:
+        return
+
+    for top, dirs, nondirs in os.walk(src_):
+        for dir_ in dirs:
+            try:
+                temp = int(f'0x{dir_}', 16)
+            except:
+                continue
+
+            ga_dir = os.path.join(top, dir_)
+            if not os.listdir(ga_dir):
+                print(f'ga_dir: {ga_dir}')
+                shutil.rmtree(ga_dir)
+
+
+def test_delete_direct_child_dirs(src_):
+    """
+    jar 包移动后删除空文件夹
+    :param src_:
+    :return:
+    """
+    print(f'----------------------------------------------test_delete_direct_child_dirs')
+    if not src_:
+        return
+
+    for dir_ in os.listdir(src_):
+        after_dir = os.path.join(src_, dir_)
+        if os.path.isdir(after_dir) and not os.listdir(after_dir):
+            print(f'after_dir: {after_dir}')
+            shutil.rmtree(after_dir)
+
+
 def test():
     print(f'test')
 
