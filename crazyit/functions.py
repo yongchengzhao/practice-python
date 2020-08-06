@@ -328,23 +328,33 @@ def test_conversion_of_number_system():
     练习进制转换。
     @return:
     """
-    print(int('10'))
-    print(int('1000', 2))
-    print(int('100', 3))
-    print(int('011', 8))
-    print(int('11', 8))
-    print(int('0x11', 16))
-    print(int('11', 16))
+    # 将 2/3/8/16 进制转换为 10 进制
+    print(int('10'))  # 10
+    print(int('1000', 2))  # 8
+    print(int('100', 3))  # 9
+    print(int('011', 8))  # 9
+    print(int('11', 8))  # 9
+    print(int('0x11', 16))  # 17
+    print(int('11', 16))  # 17
 
-    print(bin(4))
-    print(bin(8))
+    # 将 10 进制转换为 2 进制
+    print(bin(4))  # 0b100
+    print(bin(8))  # 0b1000
 
-    print(oct(10))
-    print(oct(16))
+    # 将 10 进制转换为 8 进制
+    print(oct(10))  # 0o12
+    print(oct(16))  # 0o20
 
-    print(hex(10))
-    print(hex(16))
-    print(str(hex(10))[-1])
+    # 将 10 进制转换为 16 进制
+    print(hex(10))  # 0xa
+    print(hex(16))  # 0x10
+    print(str(hex(10))[-1])  # a
+
+    # 将 16 进制字符串转为 10 进制
+    # ss = '155f0f7d0e66a992de6a8d73b7cbf71ed22ace60'
+    ss = 'f'
+    hex_str = f'0x{ss}'
+    print(int(hex_str, 16))  # 15
 
 
 def calculate_compound(principal, annual_interest_rate, years):
@@ -1723,4 +1733,4 @@ def test():
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test()
+    test_conversion_of_number_system()
