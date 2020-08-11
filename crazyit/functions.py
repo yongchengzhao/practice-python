@@ -1737,6 +1737,15 @@ def test_base64():
     pprint.pprint(decoded_data)
 
 
+def test_is_instance():
+    dd = {}
+
+    print(isinstance(dd, dict))  # True
+    # print(isinstance(dd, 'dict'))  # 此行报错，TypeError: isinstance() arg 2 must be a type or tuple of types
+    print(isinstance(dd, str))  # False
+    print(isinstance(dd, (dict, str)))  # True
+
+
 def test():
     print(f'test')
 
