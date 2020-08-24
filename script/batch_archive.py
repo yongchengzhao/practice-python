@@ -116,9 +116,6 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
     """
     data = {}
 
-    # for wp_key, wp_value in wp_info.items():
-    #     print(f"{wp_key}: {type(wp_value)}: {wp_value}")
-
     wp_code = wp_info.get('code')
     if not wp_code:
         return {}
@@ -128,40 +125,38 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
     if not segment_info:
         return {}
 
+    form_list, msg = get_form_list(wp_info)
+    if form_list is False:
+        msg = f'get_form_list error, wp_code: {wp_code}, ' + msg
+        show_and_save_msg(msg, f'{time_str}-assemble_request_data_by_wp_info.log')
+        return {}
+
+    unit_type = get_unit_type(wp_info)
+    if not unit_type:
+        msg = f'get_unit_type error, wp_code: {wp_code}'
+        show_and_save_msg(msg, f'{time_str}-assemble_request_data_by_wp_info.log')
+        return {}
+
+    extra_params = wp_info.get('extra_params', {})
+    pass_percent, msg = process_pass_percent(extra_params.get('qr_count', {}).get('percent'))
+    if pass_percent is False:
+        msg = f'process_pass_percent error, wp_code: {wp_code}, msg: {msg}'
+        show_and_save_msg(msg, f'{time_str}-assemble_request_data_by_wp_info.log')
+        return {}
+
     unit_name = segment_info.get('parent', {}).get('name')
     segment_name = segment_info.get('name', '')
     discipline_name = wp_info.get('parent', {}).get('name')
     wp_name = wp_info.get('name', '')
-    extra_params = wp_info.get('extra_params', {})
 
     station_scope = extra_params.get('桩号范围') if '现场' not in extra_params.get('桩号范围') else ''
     elevation_scope = extra_params.get('高程') if '现场' not in extra_params.get('高程') else ''
     construction_start = slice_date_str_from_datetime_str(wp_info.get('tech_parmas', {}).get('actual_process', {}).get('start_time', ''))
     construction_end = slice_date_str_from_datetime_str(wp_info.get('tech_parmas', {}).get('actual_process', {}).get('end_time', ''))
 
-    pass_percent, msg = process_pass_percent(extra_params.get('qr_count', {}).get('percent'))
-    if pass_percent is False:
-        msg = f'process_pass_percent error, wp_code: {wp_code}, msg: {msg}'
-        print(msg)
-        print(msg, file=open(f'{time_str}-assemble_request_data_by_wp_info.log', mode='a'), flush=True)
-        return {}
-
     quality_level = {None: None, '不合格': 0, '合格': 1, '优良': 2}.get(extra_params.get('qr_count', {}).get('grade'))
     data_from = f'雅砻江杨房沟水电站设计施工BIM管理系统'
     static_files = get_static_file_list(wp_info)
-
-    form_list, msg = get_form_list(wp_info)
-    if form_list is False:
-        msg = f'get_form_list error, wp_code: {wp_code}, ' + msg
-        print(msg)
-        print(msg, file=open(f'{time_str}-get_form_list.log', mode='a'), flush=True)
-        return {}
-
-    unit_type = get_unit_type(wp_info)
-    if not unit_type:
-        msg = f'get_unit_type error, wp_code: {wp_code}'
-        print(msg)
-        print(msg, file=open(f'{time_str}-get_unit_type.log', mode='a'), flush=True)
 
     data['name'] = f'雅砻江杨房沟水电站{unit_name}{elevation_scope}{segment_name}{discipline_name}{wp_name}'
     data['unit'] = unit_name
@@ -182,7 +177,8 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
     data['work_package_code'] = wp_code
     data['unit_engineering_code'] = wp_code
 
-    print(f'"{wp_code}": {json.dumps(data).encode("utf-8").decode("unicode_escape")},')
+    msg = f'"{wp_code}": {json.dumps(data).encode("utf-8").decode("unicode_escape")},'
+    show_and_save_msg(msg)
     return data
 
 
@@ -360,7 +356,7 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
 
     # 记录无法根据施工包 code 获取到施工包信息的情况
     if res.status_code != 200:
-        cannot_get_wp_info_pk_list.append(pk)
+        cannot_get_wp_info_id_list.append(pk)
         msg = f'get_wp_info_by_id error, wp_id: {pk}, res.status_code: {res.status_code}, res.content: {res.content}'
         show_and_save_msg(msg=msg, file_name=f'{time_str}-cannot_get_wp_info_id_list.log')
         return {}
@@ -371,7 +367,7 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
 
 def count_wp_by_is_completed(wp_id_list: list):
     """
-     通过 id 列表以 is_completed 为依据统计施工包。
+    通过 id 列表以 is_completed 为依据统计施工包。
     :param wp_id_list:
     :return:
     """
