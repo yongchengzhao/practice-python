@@ -88,9 +88,11 @@ def log_result():
     记录结果。
     :return:
     """
-    msg = f'''get_wp_info_by_code_error_code_list: len: {len(get_wp_info_by_code_error_code_list)}, content: {get_wp_info_by_code_error_code_list}
+    msg = f'''get_wp_info_by_code_error_code_list: len: {len(get_wp_info_by_code_error_code_list)}, content: \
+{get_wp_info_by_code_error_code_list}
 already_archived_wp_code_list: len: {len(already_archived_wp_code_list)}, content: {already_archived_wp_code_list}
-assemble_request_data_error_wp_code_list: len: {len(assemble_request_data_error_wp_code_list)}, content: {assemble_request_data_error_wp_code_list}
+assemble_request_data_error_wp_code_list: len: {len(assemble_request_data_error_wp_code_list)}, content: \
+{assemble_request_data_error_wp_code_list}
 archive_error_wp_code_list: len: {len(archive_error_wp_code_list)}, content: {archive_error_wp_code_list}
 ftp_failed_wp_code_list: len: {len(ftp_failed_wp_code_list)}, content: {ftp_failed_wp_code_list}
 summary_failed_wp_code_list: len: {len(summary_failed_wp_code_list)}, content: {summary_failed_wp_code_list}
@@ -136,9 +138,9 @@ def transfer_ftp(archive_info: dict) -> bool:
     :param archive_info:
     :return:
     """
-    archive_id = archive_info.get('id')
     url = f'http://{archive_ip_port}/main/api/transfer-ftp/'
     headers = {'content-type': 'application/json'}
+    archive_id = archive_info.get('id')
     data = {'id_list': [archive_id]}
     res = requests.post(url=url, data=json.dumps(data), headers=headers)
 
@@ -236,8 +238,10 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
 
     station_scope = extra_params.get('桩号范围') if '现场' not in extra_params.get('桩号范围') else ''
     elevation_scope = extra_params.get('高程') if '现场' not in extra_params.get('高程') else ''
-    construction_start = slice_date_str_from_datetime_str(wp_info.get('tech_parmas', {}).get('actual_process', {}).get('start_time', ''))
-    construction_end = slice_date_str_from_datetime_str(wp_info.get('tech_parmas', {}).get('actual_process', {}).get('end_time', ''))
+    construction_start = slice_date_str_from_datetime_str(wp_info.get('tech_parmas', {}).get('actual_process', {})
+                                                          .get('start_time', ''))
+    construction_end = slice_date_str_from_datetime_str(wp_info.get('tech_parmas', {}).get('actual_process', {})
+                                                        .get('end_time', ''))
 
     quality_level = {None: None, '不合格': 0, '合格': 1, '优良': 2}.get(extra_params.get('qr_count', {}).get('grade'))
     data_from = f'雅砻江杨房沟水电站设计施工BIM管理系统'
@@ -273,7 +277,6 @@ def get_unit_type(wp_info: dict) -> str:
     :param wp_info:
     :return:
     """
-    unit_type = ''
 
     form_list = wp_info.get('qic_documents', [])
     if not form_list:
@@ -386,7 +389,8 @@ def get_static_file_list(wp_info: dict) -> list:
         if not extra_static_file_id:
             continue
 
-        extra_static_file_name = os.path.splitext(os.path.basename(extra_static_file.get('file', {}).get('name', 'undefined')))[0]
+        extra_static_file_name = os.path.splitext(os.path.basename(extra_static_file.get('file', {})
+                                                                   .get('name', 'undefined')))[0]
         static_file_list.append({'id': extra_static_file_id, 'name': f'{extra_static_file_name}'})
 
     return static_file_list
@@ -502,7 +506,7 @@ if __name__ == '__main__':
     print(f'{datetime.now()}: ----------main----------')
     # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
     # 宗岳提供的批量组件参数：
-    # wp_code_list_ = ['Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005', 'Z01-05-02-0006', 'Z01-05-02-0007', 'Z01-05-02-0008', 'Z01-05-02-0009', 'Z01-05-02-0010', 'Z01-05-02-0012', 'Z01-05-02-0013', 'Z01-05-03-0001', 'Z01-05-03-0002', 'Z01-05-03-0003', 'Z01-05-03-0004', 'Z01-05-03-0005', 'Z01-05-03-0006', 'Z01-05-03-0007', 'Z01-05-03-0008', 'Z01-05-03-0009', 'Z01-05-03-0010', 'Z01-05-03-0011', 'Z01-05-03-0012', 'Z01-05-03-0013', 'Z01-05-03-0014', 'Z01-05-03-0015']
+    wp_code_list_ = ['Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005', 'Z01-05-02-0006', 'Z01-05-02-0007']
     # wp_code_list_ = ['Z01-05-02-0003']
     # batch_archive(wp_code_list_)
 
