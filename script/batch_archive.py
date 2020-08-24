@@ -504,11 +504,9 @@ def count_wp_by_is_completed(wp_id_list: list):
 
 if __name__ == '__main__':
     print(f'{datetime.now()}: ----------main----------')
-    # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
-    # 宗岳提供的批量组件参数：
-    wp_code_list_ = ['Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005', 'Z01-05-02-0006', 'Z01-05-02-0007']
-    # wp_code_list_ = ['Z01-05-02-0003']
-    # batch_archive(wp_code_list_)
 
     # wp_id_list_ = []
+    # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
+
+    # batch_archive(wp_code_list_)
     # count_wp_by_is_completed(wp_id_list_)
