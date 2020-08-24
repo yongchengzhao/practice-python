@@ -446,7 +446,7 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
     # 记录无法根据施工包 code 获取到施工包信息的情况
     if res.status_code != 200:
         cannot_get_wp_info_pk_list.append(pk)
-        msg = f'get_wp_info_by_id error, wp_id: {pk}, res.status_code: {res.status_code}, res.content: {res.content}'
+        msg = f'get_wp_info_by_pk error, wp_id: {pk}, res.status_code: {res.status_code}, res.content: {res.content}'
         show_and_save_msg(msg=msg, file_name=f'{time_str}-cannot_get_wp_info_id_list.log')
         return {}
 
@@ -495,9 +495,8 @@ def count_wp_by_is_completed(wp_id_list: list):
         else:
             is_completed_6.append(wp_id)
 
-    for is_completed_result in is_completed_result_list:
-        result_index = is_completed_result_list.index(is_completed_result)
-        msg = f'is_completed_{result_index}: len: {len(is_completed_result)}, rate: ' \
+    for is_completed_result, seq in zip(is_completed_result_list, range(len(is_completed_result_list))):
+        msg = f'is_completed_{seq}: len: {len(is_completed_result)}, rate: ' \
               f'{round(len(is_completed_result) / len(wp_id_list) * 100, 2)}%, content: {is_completed_result}'
         show_and_save_msg(msg=msg, file_name=f'{time_str}-count_wp_by_is_completed.log')
 
@@ -505,7 +504,7 @@ def count_wp_by_is_completed(wp_id_list: list):
 if __name__ == '__main__':
     print(f'{datetime.now()}: ----------main----------')
 
-    # wp_id_list_ = []
+    # wp_id_list_ = ['13932688575005', '25040397266978', '25040396283938', '25040401133602', '25040402051106']
     # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
 
     # batch_archive(wp_code_list_)
