@@ -20,6 +20,7 @@ from PyPDF2 import PdfFileReader
 
 from decorators import BaseDecorator, ElapseDecorator, LogArgDecorator, LogResultDecorator, EnterExitDecorator
 from decorators import enter_decorator, exit_decorator, duration, log_args
+from static_data import construction_user_list
 
 
 def test_standardize_form_file_names():
@@ -1744,6 +1745,20 @@ def test_is_instance():
     # print(isinstance(dd, 'dict'))  # 此行报错，TypeError: isinstance() arg 2 must be a type or tuple of types
     print(isinstance(dd, str))  # False
     print(isinstance(dd, (dict, str)))  # True
+
+
+def process_construction_user_list():
+    """
+    协助宗岳处理杨房沟应用层用户信息并交给吴飞。
+    :return:
+    """
+    print(f'用户名\t姓名\t所属部门')
+    for user_info in construction_user_list:
+        username = user_info.get('username')
+        person_name = user_info.get('account', {}).get('person_name')
+        organization = user_info.get('account', {}).get('organization')
+
+        print(f'{username}\t{person_name}\t{organization}')
 
 
 def test():
