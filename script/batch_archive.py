@@ -48,13 +48,22 @@ def batch_archive(wp_code_list: list):
             continue
 
         # 这里组件
-        pass
+        archive_info = perform_archive(request_data)
+        if not archive_info:
+            archive_error_wp_code_list.append(wp_code)
+            continue
 
         # 这里推送归档包
-        pass
+        ftp_result = transfer_ftp(archive_info)
+        if ftp_result is False:
+            ftp_failed_wp_code_list.append(wp_code)
+            continue
 
         # 这里传输概要信息
-        pass
+        summary_result = transfer_summary_info(archive_info)
+        if summary_result is False:
+            summary_failed_wp_code_list.append(wp_code)
+            continue
 
         success_wp_code_list.append(wp_code)
 
@@ -88,6 +97,84 @@ summary_failed_wp_code_list: len: {len(summary_failed_wp_code_list)}, content: {
 success_wp_code_list: len: {len(success_wp_code_list)}, content: {success_wp_code_list}
 '''
     show_and_save_msg(msg=msg, file_name=f'{time_str}-result.log')
+
+
+def transfer_summary_info(archive_info: dict) -> bool:
+    """
+    传输概要信息到紫光。
+    :param archive_info:
+    :return:
+    """
+    archive_id = archive_info.get('id')
+    url = f'http://{archive_ip_port}/main/api/transfer-summary/'
+    headers = {'content-type': 'application/json'}
+    data = {'id_list': [archive_id]}
+    res = requests.post(url=url, data=json.dumps(data), headers=headers)
+
+    if res.status_code != 200:
+        return False
+
+    result_list = json.loads(res.content.decode('utf-8'))
+    for result in result_list:
+        if not isinstance(result, dict):
+            return False
+
+        if not result.get('res.content') or not isinstance(result.get('res.content'), str):
+            return False
+
+        if "value='true'" in result.get('res.content'):
+            return True
+
+        return False
+
+    return False
+
+
+def transfer_ftp(archive_info: dict) -> bool:
+    """
+    通过 FTP 传输归档包到紫光。
+    :param archive_info:
+    :return:
+    """
+    archive_id = archive_info.get('id')
+    url = f'http://{archive_ip_port}/main/api/transfer-ftp/'
+    headers = {'content-type': 'application/json'}
+    data = {'id_list': [archive_id]}
+    res = requests.post(url=url, data=json.dumps(data), headers=headers)
+
+    if res.status_code != 200:
+        return False
+
+    result_list = json.loads(res.content.decode('utf-8'))
+    for result in result_list:
+        if result.get('result', '') == 'success':
+            return True
+        return False
+
+    return False
+
+
+def perform_archive(request_data: dict) -> dict:
+    """
+    执行组件动作。
+    :param request_data:
+    :return:
+    """
+    url = f'http://{archive_ip_port}/main/api/archives/'
+    headers = {'content-type': 'application/json'}
+    res = requests.post(url=url, data=json.dumps(request_data), headers=headers)
+
+    if res.status_code != 201:
+        return {}
+
+    try:
+        archive_info = json.loads(res.content.decode('utf-8'))
+    except (json.decoder.JSONDecodeError, TypeError) as e:
+        msg = f'perform_archive error, exception: {e}'
+        show_and_save_msg(msg, f'{time_str}-perform_archive.log')
+        return {}
+
+    return archive_info
 
 
 def is_wp_archived(wp_info: dict) -> bool:
