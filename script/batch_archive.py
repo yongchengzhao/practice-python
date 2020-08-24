@@ -12,7 +12,7 @@ sjc_ip_port = '10.215.160.41:6543'
 # sjc_ip_port = '10.218.8.32:8000'
 creator_username = 'wang_yt'
 
-cannot_get_wp_info_code_list = []
+cannot_get_wp_info_pk_list = []
 time_str = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
 
@@ -24,7 +24,7 @@ def batch_archive(wp_code_list: list):
     """
     print(f'{datetime.now()}: batch_archive()')
     for wp_code in wp_code_list:
-        wp_info = get_wp_info_by_code(wp_code)
+        wp_info = get_wp_info_by_pk(wp_code, 'code')
 
         # 检测是否已经组件或者提交过，如果已组件或者已提交，则 continue
         is_archived = is_wp_archived(wp_info)
@@ -41,6 +41,19 @@ def batch_archive(wp_code_list: list):
 
         # 这里传输概要信息
         pass
+
+
+def show_and_save_msg(msg='', file_name='', flush=True):
+    """
+    打印信息到屏幕和文件中。
+    :param msg:
+    :param file_name:
+    :param flush:
+    :return:
+    """
+    print(msg)
+    if file_name:
+        print(msg, file=open(f'{file_name}', mode='a'), flush=flush)
 
 
 def is_wp_archived(wp_info: dict) -> bool:
@@ -75,7 +88,7 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
         return {}
 
     segment_code = '-'.join(wp_code.split('-')[:2])
-    segment_info = get_wp_info_by_code(segment_code)
+    segment_info = get_wp_info_by_pk(segment_code, 'code')
     if not segment_info:
         return {}
 
@@ -291,25 +304,29 @@ def slice_date_str_from_datetime_str(datetime_str: str) -> str:
     return date_str
 
 
-
-def get_wp_info_by_code(wp_code: str) -> dict:
+def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
     """
     通过施工包编码获取施工包信息。
-    :param wp_code:
-    :return:
+    @param pk:
+    @param pk_type:
     """
-    if not wp_code.strip():
+    if not pk.strip():
         return {}
 
-    url = f'http://{sjc_ip_port}/api/workpackages/code/{wp_code}/?all=true'
+    if pk_type == 'code':
+        url = f'http://{sjc_ip_port}/api/workpackages/code/{pk}/?all=true'
+    elif pk_type == 'id':
+        url = f'http://{sjc_ip_port}/api/workpackages/{pk}/'
+    else:
+        return {}
+
     res = requests.get(url=url)
 
     # 记录无法根据施工包 code 获取到施工包信息的情况
     if res.status_code != 200:
-        cannot_get_wp_info_code_list.append(wp_code)
-        msg = f'get_wp_info_by_code error, wp_code: {wp_code}, res.status_code: {res.status_code}, res.content: {res.content}'
-        print(msg)
-        print(msg, file=open(f'{time_str}-cannot_get_wp_info_code_list.log', mode='a'), flush=True)
+        cannot_get_wp_info_pk_list.append(pk)
+        msg = f'get_wp_info_by_id error, wp_id: {pk}, res.status_code: {res.status_code}, res.content: {res.content}'
+        show_and_save_msg(msg=msg, file_name=f'{time_str}-cannot_get_wp_info_id_list.log')
         return {}
 
     wp_info = json.loads(res.content.decode('utf-8'))
