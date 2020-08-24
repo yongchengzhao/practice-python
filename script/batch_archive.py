@@ -14,9 +14,7 @@ creator_username = 'wang_yt'
 
 time_str = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
-cannot_get_wp_info_code_list = []
-cannot_get_wp_info_id_list = []
-
+cannot_get_wp_info_pk_list = []
 get_wp_info_by_code_error_code_list = []
 already_archived_wp_code_list = []
 assemble_request_data_error_wp_code_list = []
@@ -356,7 +354,7 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
 
     # 记录无法根据施工包 code 获取到施工包信息的情况
     if res.status_code != 200:
-        cannot_get_wp_info_id_list.append(pk)
+        cannot_get_wp_info_pk_list.append(pk)
         msg = f'get_wp_info_by_id error, wp_id: {pk}, res.status_code: {res.status_code}, res.content: {res.content}'
         show_and_save_msg(msg=msg, file_name=f'{time_str}-cannot_get_wp_info_id_list.log')
         return {}
