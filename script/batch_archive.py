@@ -31,6 +31,11 @@ def batch_archive(wp_pk_list: list, pk_type: str):
     @param pk_type:
     """
     for wp_pk in wp_pk_list:
+        msg = f'wp_pk: {wp_pk}, progress: {wp_pk_list.index(wp_pk)} / {len(wp_pk_list)}, ' \
+              f'{round(wp_pk_list.index(wp_pk) / len(wp_pk_list) * 100, 2)}%'
+        show_and_save_msg(msg=msg)
+
+        # 获取施工包信息
         wp_info = get_wp_info_by_pk(wp_pk, pk_type)
         if not wp_info:
             get_wp_info_by_pk_error_pk_list.append(wp_pk)
@@ -42,6 +47,7 @@ def batch_archive(wp_pk_list: list, pk_type: str):
             already_archived_wp_pk_list.append(wp_pk)
             continue
 
+        # 组装请求参数
         request_data = assemble_request_data_by_wp_info(wp_info)
         if not request_data:
             assemble_request_data_error_wp_pk_list.append(wp_pk)
@@ -499,8 +505,8 @@ def count_wp_by_is_completed(wp_id_list: list):
 if __name__ == '__main__':
     print(f'{datetime.now()}: ----------main----------')
 
-    # wp_id_list_ = ['13932688575005', '25040397266978', '25040396283938', '25040401133602', '25040402051106']
+    # wp_id_list_ = ['69767260673793', '30065569472298', '30065578123050', '30065573011242', '30065574649642']
     # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
 
-    # batch_archive(wp_code_list_)
+    # batch_archive(wp_id_list_, pk_type='id')
     # count_wp_by_is_completed(wp_id_list_)
