@@ -455,22 +455,22 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
     return wp_info
 
 
-def count_wp_by_is_completed(wp_id_list: list):
+def count_wp_by_is_completed(wp_pk_list: list, pk_type: str):
     """
     通过 id 列表以 is_completed 为依据统计施工包。
-    :param wp_id_list:
-    :return:
+    @param wp_pk_list:
+    @param pk_type:
     """
     is_completed_0, is_completed_1, is_completed_2, is_completed_3, is_completed_4, is_completed_5, is_completed_6 =\
         [], [], [], [], [], [], []
     is_completed_result_list = [is_completed_0, is_completed_1, is_completed_2, is_completed_3, is_completed_4,
                                 is_completed_5, is_completed_6]
 
-    for wp_id in wp_id_list:
-        wp_info = get_wp_info_by_pk(wp_id, 'id')
+    for wp_pk in wp_pk_list:
+        wp_info = get_wp_info_by_pk(wp_pk, pk_type)
         is_completed = wp_info.get('is_completed')
-        print(f'wp_id: {wp_id}, is_completed: {is_completed}, progress: {wp_id_list.index(wp_id)}/{len(wp_id_list)}, '
-              f'{round(wp_id_list.index(wp_id) / len(wp_id_list) * 100, 2)}%')
+        print(f'wp_pk: {wp_pk}, is_completed: {is_completed}, progress: {wp_pk_list.index(wp_pk)} / {len(wp_pk_list)}, '
+              f'{round(wp_pk_list.index(wp_pk) / len(wp_pk_list) * 100, 2)}%')
 
         """
         只有 2 需要进行批量组件。
@@ -482,23 +482,23 @@ def count_wp_by_is_completed(wp_id_list: list):
         * 5 表单提交到流程后 暂未审批通过 红色
         """
         if is_completed == 0:
-            is_completed_0.append(wp_id)
+            is_completed_0.append(wp_pk)
         elif is_completed == 1:
-            is_completed_1.append(wp_id)
+            is_completed_1.append(wp_pk)
         elif is_completed == 2:
-            is_completed_2.append(wp_id)
+            is_completed_2.append(wp_pk)
         elif is_completed == 3:
-            is_completed_3.append(wp_id)
+            is_completed_3.append(wp_pk)
         elif is_completed == 4:
-            is_completed_4.append(wp_id)
+            is_completed_4.append(wp_pk)
         elif is_completed == 5:
-            is_completed_5.append(wp_id)
+            is_completed_5.append(wp_pk)
         else:
-            is_completed_6.append(wp_id)
+            is_completed_6.append(wp_pk)
 
     for is_completed_result, seq in zip(is_completed_result_list, range(len(is_completed_result_list))):
         msg = f'is_completed_{seq}: len: {len(is_completed_result)}, rate: ' \
-              f'{round(len(is_completed_result) / len(wp_id_list) * 100, 2)}%, content: {is_completed_result}'
+              f'{round(len(is_completed_result) / len(wp_pk_list) * 100, 2)}%, content: {is_completed_result}'
         show_and_save_msg(msg=msg, file_name=f'{time_str}-count_wp_by_is_completed.log')
 
 
@@ -509,4 +509,4 @@ if __name__ == '__main__':
     # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
 
     # batch_archive(wp_id_list_, pk_type='id')
-    # count_wp_by_is_completed(wp_id_list_)
+    # count_wp_by_is_completed(wp_id_list_, 'id')
