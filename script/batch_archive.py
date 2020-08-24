@@ -15,7 +15,6 @@ creator_username = 'wang_yt'
 time_str = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
 # 异常列表
-cannot_get_wp_info_pk_list = []
 get_wp_info_by_pk_error_pk_list = []
 already_archived_wp_pk_list = []
 assemble_request_data_error_wp_pk_list = []
@@ -25,48 +24,48 @@ summary_failed_wp_pk_list = []
 success_wp_pk_list = []
 
 
-def batch_archive(wp_code_list: list):
+def batch_archive(wp_pk_list: list, pk_type: str):
     """
     根据施工包编码列表批量组件。
-    :param wp_code_list:
-    :return:
+    @param wp_pk_list:
+    @param pk_type:
     """
-    for wp_code in wp_code_list:
-        wp_info = get_wp_info_by_pk(wp_code, 'code')
+    for wp_pk in wp_pk_list:
+        wp_info = get_wp_info_by_pk(wp_pk, pk_type)
         if not wp_info:
-            get_wp_info_by_pk_error_pk_list.append(wp_code)
+            get_wp_info_by_pk_error_pk_list.append(wp_pk)
             continue
 
         # 检测是否已经组件或者提交过，如果已组件或者已提交，则 continue
         is_archived = is_wp_archived(wp_info)
         if is_archived:
-            already_archived_wp_pk_list.append(wp_code)
+            already_archived_wp_pk_list.append(wp_pk)
             continue
 
         request_data = assemble_request_data_by_wp_info(wp_info)
         if not request_data:
-            assemble_request_data_error_wp_pk_list.append(wp_code)
+            assemble_request_data_error_wp_pk_list.append(wp_pk)
             continue
 
         # 这里组件
         archive_info = perform_archive(request_data)
         if not archive_info:
-            archive_error_wp_pk_list.append(wp_code)
+            archive_error_wp_pk_list.append(wp_pk)
             continue
 
         # 这里推送归档包
         ftp_result = transfer_ftp(archive_info)
         if ftp_result is False:
-            ftp_failed_wp_pk_list.append(wp_code)
+            ftp_failed_wp_pk_list.append(wp_pk)
             continue
 
         # 这里传输概要信息
         summary_result = transfer_summary_info(archive_info)
         if summary_result is False:
-            summary_failed_wp_pk_list.append(wp_code)
+            summary_failed_wp_pk_list.append(wp_pk)
             continue
 
-        success_wp_pk_list.append(wp_code)
+        success_wp_pk_list.append(wp_pk)
 
     log_result()
 
@@ -287,7 +286,7 @@ def get_unit_type(wp_info: dict) -> str:
     attributes = form.get('attributes', '{}')
     try:
         attributes = json.loads(attributes)
-    except json.decoder.JSONDecodeError:
+    except (json.decoder.JSONDecodeError, TypeError):
         return ''
 
     # serial_code 的格式为 Z01-05-02-0002-KL01
@@ -327,7 +326,7 @@ def get_form_list(wp_info: dict):
         attributes = raw_form.get('attributes', '{}')
         try:
             attributes = json.loads(attributes)
-        except json.decoder.JSONDecodeError:
+        except (json.decoder.JSONDecodeError, TypeError):
             return False, f'form_id: {form_id}'
 
         form_static_file_list = attributes.get('extra', {}).get('detail', {}).get('tableAttachments', [])
@@ -432,7 +431,7 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
     @param pk:
     @param pk_type:
     """
-    if not pk.strip():
+    if not pk.strip() or not pk_type.strip():
         return {}
 
     if pk_type == 'code':
@@ -443,12 +442,7 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
         return {}
 
     res = requests.get(url=url)
-
-    # 记录无法根据施工包 code 获取到施工包信息的情况
     if res.status_code != 200:
-        cannot_get_wp_info_pk_list.append(pk)
-        msg = f'get_wp_info_by_pk error, wp_id: {pk}, res.status_code: {res.status_code}, res.content: {res.content}'
-        show_and_save_msg(msg=msg, file_name=f'{time_str}-cannot_get_wp_info_id_list.log')
         return {}
 
     wp_info = json.loads(res.content.decode('utf-8'))
