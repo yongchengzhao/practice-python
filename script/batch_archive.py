@@ -12,19 +12,23 @@ sjc_ip_port = '10.215.160.41:6543'
 # sjc_ip_port = '10.218.8.32:8000'
 creator_username = 'wang_yt'
 
-cannot_get_wp_info_pk_list = []
 time_str = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
+cannot_get_wp_info_code_list = []
 cannot_get_wp_info_id_list = []
 
 get_wp_info_by_code_error_code_list = []
 already_archived_wp_code_list = []
 assemble_request_data_error_wp_code_list = []
+archive_error_wp_code_list = []
+ftp_failed_wp_code_list = []
+summary_failed_wp_code_list = []
+success_wp_code_list = []
 
 
 def batch_archive(wp_code_list: list):
     """
-    批量组件。
+    根据施工包编码列表批量组件。
     :param wp_code_list:
     :return:
     """
@@ -54,6 +58,10 @@ def batch_archive(wp_code_list: list):
         # 这里传输概要信息
         pass
 
+        success_wp_code_list.append(wp_code)
+
+    log_result()
+
 
 def show_and_save_msg(msg='', file_name='', flush=True):
     """
@@ -66,6 +74,22 @@ def show_and_save_msg(msg='', file_name='', flush=True):
     print(msg)
     if file_name:
         print(msg, file=open(f'{file_name}', mode='a'), flush=flush)
+
+
+def log_result():
+    """
+    记录结果。
+    :return:
+    """
+    msg = f'''get_wp_info_by_code_error_code_list: len: {len(get_wp_info_by_code_error_code_list)}, content: {get_wp_info_by_code_error_code_list}
+already_archived_wp_code_list: len: {len(already_archived_wp_code_list)}, content: {already_archived_wp_code_list}
+assemble_request_data_error_wp_code_list: len: {len(assemble_request_data_error_wp_code_list)}, content: {assemble_request_data_error_wp_code_list}
+archive_error_wp_code_list: len: {len(archive_error_wp_code_list)}, content: {archive_error_wp_code_list}
+ftp_failed_wp_code_list: len: {len(ftp_failed_wp_code_list)}, content: {ftp_failed_wp_code_list}
+summary_failed_wp_code_list: len: {len(summary_failed_wp_code_list)}, content: {summary_failed_wp_code_list}
+success_wp_code_list: len: {len(success_wp_code_list)}, content: {success_wp_code_list}
+'''
+    show_and_save_msg(msg=msg, file_name=f'{time_str}-result.log')
 
 
 def is_wp_archived(wp_info: dict) -> bool:
