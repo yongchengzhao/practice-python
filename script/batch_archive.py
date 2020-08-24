@@ -15,6 +15,12 @@ creator_username = 'wang_yt'
 cannot_get_wp_info_pk_list = []
 time_str = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
+cannot_get_wp_info_id_list = []
+
+get_wp_info_by_code_error_code_list = []
+already_archived_wp_code_list = []
+assemble_request_data_error_wp_code_list = []
+
 
 def batch_archive(wp_code_list: list):
     """
@@ -22,16 +28,22 @@ def batch_archive(wp_code_list: list):
     :param wp_code_list:
     :return:
     """
-    print(f'{datetime.now()}: batch_archive()')
     for wp_code in wp_code_list:
         wp_info = get_wp_info_by_pk(wp_code, 'code')
+        if not wp_info:
+            get_wp_info_by_code_error_code_list.append(wp_code)
+            continue
 
         # 检测是否已经组件或者提交过，如果已组件或者已提交，则 continue
         is_archived = is_wp_archived(wp_info)
         if is_archived:
+            already_archived_wp_code_list.append(wp_code)
             continue
 
         request_data = assemble_request_data_by_wp_info(wp_info)
+        if not request_data:
+            assemble_request_data_error_wp_code_list.append(wp_code)
+            continue
 
         # 这里组件
         pass
