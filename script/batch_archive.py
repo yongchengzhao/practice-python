@@ -6,22 +6,23 @@ import os
 from datetime import datetime, timedelta
 import requests
 
+# 环境信息
 archive_ip_port = '10.215.160.41:8000'
 sjc_ip_port = '10.215.160.41:6543'
 # archive_ip_port = '10.218.8.34:8989'
 # sjc_ip_port = '10.218.8.32:8000'
 creator_username = 'wang_yt'
-
 time_str = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
+# 异常列表
 cannot_get_wp_info_pk_list = []
-get_wp_info_by_code_error_code_list = []
-already_archived_wp_code_list = []
-assemble_request_data_error_wp_code_list = []
-archive_error_wp_code_list = []
-ftp_failed_wp_code_list = []
-summary_failed_wp_code_list = []
-success_wp_code_list = []
+get_wp_info_by_pk_error_pk_list = []
+already_archived_wp_pk_list = []
+assemble_request_data_error_wp_pk_list = []
+archive_error_wp_pk_list = []
+ftp_failed_wp_pk_list = []
+summary_failed_wp_pk_list = []
+success_wp_pk_list = []
 
 
 def batch_archive(wp_code_list: list):
@@ -33,39 +34,39 @@ def batch_archive(wp_code_list: list):
     for wp_code in wp_code_list:
         wp_info = get_wp_info_by_pk(wp_code, 'code')
         if not wp_info:
-            get_wp_info_by_code_error_code_list.append(wp_code)
+            get_wp_info_by_pk_error_pk_list.append(wp_code)
             continue
 
         # 检测是否已经组件或者提交过，如果已组件或者已提交，则 continue
         is_archived = is_wp_archived(wp_info)
         if is_archived:
-            already_archived_wp_code_list.append(wp_code)
+            already_archived_wp_pk_list.append(wp_code)
             continue
 
         request_data = assemble_request_data_by_wp_info(wp_info)
         if not request_data:
-            assemble_request_data_error_wp_code_list.append(wp_code)
+            assemble_request_data_error_wp_pk_list.append(wp_code)
             continue
 
         # 这里组件
         archive_info = perform_archive(request_data)
         if not archive_info:
-            archive_error_wp_code_list.append(wp_code)
+            archive_error_wp_pk_list.append(wp_code)
             continue
 
         # 这里推送归档包
         ftp_result = transfer_ftp(archive_info)
         if ftp_result is False:
-            ftp_failed_wp_code_list.append(wp_code)
+            ftp_failed_wp_pk_list.append(wp_code)
             continue
 
         # 这里传输概要信息
         summary_result = transfer_summary_info(archive_info)
         if summary_result is False:
-            summary_failed_wp_code_list.append(wp_code)
+            summary_failed_wp_pk_list.append(wp_code)
             continue
 
-        success_wp_code_list.append(wp_code)
+        success_wp_pk_list.append(wp_code)
 
     log_result()
 
@@ -88,15 +89,15 @@ def log_result():
     记录结果。
     :return:
     """
-    msg = f'''get_wp_info_by_code_error_code_list: len: {len(get_wp_info_by_code_error_code_list)}, content: \
-{get_wp_info_by_code_error_code_list}
-already_archived_wp_code_list: len: {len(already_archived_wp_code_list)}, content: {already_archived_wp_code_list}
-assemble_request_data_error_wp_code_list: len: {len(assemble_request_data_error_wp_code_list)}, content: \
-{assemble_request_data_error_wp_code_list}
-archive_error_wp_code_list: len: {len(archive_error_wp_code_list)}, content: {archive_error_wp_code_list}
-ftp_failed_wp_code_list: len: {len(ftp_failed_wp_code_list)}, content: {ftp_failed_wp_code_list}
-summary_failed_wp_code_list: len: {len(summary_failed_wp_code_list)}, content: {summary_failed_wp_code_list}
-success_wp_code_list: len: {len(success_wp_code_list)}, content: {success_wp_code_list}
+    msg = f'''get_wp_info_by_pk_error_pk_list: len: {len(get_wp_info_by_pk_error_pk_list)}, content: \
+{get_wp_info_by_pk_error_pk_list}
+already_archived_wp_pk_list: len: {len(already_archived_wp_pk_list)}, content: {already_archived_wp_pk_list}
+assemble_request_data_error_wp_pk_list: len: {len(assemble_request_data_error_wp_pk_list)}, content: \
+{assemble_request_data_error_wp_pk_list}
+archive_error_wp_pk_list: len: {len(archive_error_wp_pk_list)}, content: {archive_error_wp_pk_list}
+ftp_failed_wp_pk_list: len: {len(ftp_failed_wp_pk_list)}, content: {ftp_failed_wp_pk_list}
+summary_failed_wp_pk_list: len: {len(summary_failed_wp_pk_list)}, content: {summary_failed_wp_pk_list}
+success_wp_pk_list: len: {len(success_wp_pk_list)}, content: {success_wp_pk_list}
 '''
     show_and_save_msg(msg=msg, file_name=f'{time_str}-result.log')
 
