@@ -122,7 +122,11 @@ def transfer_summary_info(archive_info: dict) -> bool:
     if res.status_code != 200:
         return False
 
-    result_list = json.loads(res.content.decode('utf-8'))
+    try:
+        result_list = json.loads(res.content.decode('utf-8'))
+    except (json.decoder.JSONDecodeError, TypeError):
+        return False
+
     for result in result_list:
         if not isinstance(result, dict):
             return False
@@ -144,16 +148,20 @@ def transfer_ftp(archive_info: dict) -> bool:
     :param archive_info:
     :return:
     """
-    url = f'http://{archive_ip_port}/main/api/transfer-ftp/'
-    headers = {'content-type': 'application/json'}
     archive_id = archive_info.get('id')
     data = {'id_list': [archive_id]}
+    url = f'http://{archive_ip_port}/main/api/transfer-ftp/'
+    headers = {'content-type': 'application/json'}
     res = requests.post(url=url, data=json.dumps(data), headers=headers)
 
     if res.status_code != 200:
         return False
 
-    result_list = json.loads(res.content.decode('utf-8'))
+    try:
+        result_list = json.loads(res.content.decode('utf-8'))
+    except (json.decoder.JSONDecodeError, TypeError):
+        return False
+
     for result in result_list:
         if result.get('result', '') == 'success':
             return True
@@ -290,6 +298,7 @@ def get_unit_type(wp_info: dict) -> str:
 
     form = form_list[0]
     attributes = form.get('attributes', '{}')
+
     try:
         attributes = json.loads(attributes)
     except (json.decoder.JSONDecodeError, TypeError):
@@ -330,6 +339,7 @@ def get_form_list(wp_info: dict):
 
         form['files'] = []
         attributes = raw_form.get('attributes', '{}')
+
         try:
             attributes = json.loads(attributes)
         except (json.decoder.JSONDecodeError, TypeError):
@@ -451,7 +461,11 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
     if res.status_code != 200:
         return {}
 
-    wp_info = json.loads(res.content.decode('utf-8'))
+    try:
+        wp_info = json.loads(res.content.decode('utf-8'))
+    except (json.decoder.JSONDecodeError, TypeError):
+        return {}
+
     return wp_info
 
 
