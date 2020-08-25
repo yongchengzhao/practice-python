@@ -264,7 +264,7 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
     data_from = f'雅砻江杨房沟水电站设计施工BIM管理系统'
     static_files = get_static_file_list(wp_info)
 
-    data['name'] = f'雅砻江杨房沟水电站{unit_name}{elevation_scope}{segment_name}{discipline_name}{wp_name}'
+    data['name'] = f'雅砻江杨房沟水电站{unit_name}{elevation_scope}{segment_name}{discipline_name}{wp_name}'.replace('#', '')
     data['unit'] = unit_name
     data['segment'] = segment_name
     data['discipline'] = discipline_name
