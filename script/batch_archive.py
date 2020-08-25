@@ -606,7 +606,10 @@ if __name__ == '__main__':
     # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
     # unit_pk_dict_ = {}
 
-    # batch_archive(wp_id_list_, pk_type='id')
-    # count_wp_by_is_completed(wp_id_list_, 'id')
-    # get_wp_code_list_by_id_list(wp_id_list_)
+    # 工具函数
     # count_unit_pk(unit_pk_dict_)
+    # get_wp_code_list_by_id_list(wp_id_list_)
+
+    # 批量组件函数。先统计是否满足组件条件，只对 is_completed 是 2 的单元进行组件，其他情况单元不组件。
+    # count_wp_by_is_completed(wp_id_list_, 'id')
+    # batch_archive(wp_id_list_, pk_type='id')
