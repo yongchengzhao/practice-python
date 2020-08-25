@@ -528,6 +528,7 @@ def get_wp_code_list_by_id_list(wp_id_list: list):
     msg = f'wp_id_list: {wp_id_list}\nwp_code_list: {wp_code_list}\nwp_dict_list: {wp_dict_list}\n' \
           f'wp_error_list: {wp_error_list}'
     show_and_save_msg(msg=msg, file_name=f'{time_str}-get_wp_code_list_by_id_list.log')
+    return wp_code_list
 
 
 def get_wp_code_by_id(wp_id: str) -> str:
@@ -543,12 +544,47 @@ def get_wp_code_by_id(wp_id: str) -> str:
     return wp_info.get('code', '')
 
 
+def count_unit_pk(unit_pk_dict: dict):
+    """
+    统计单位分部分项单元 pk 信息。
+    @param unit_pk_dict:
+    @return:
+    """
+    unit_id_list = []
+    segment_id_list = []
+    discipline_id_list = []
+    wp_id_list = []
+    wp_code_list = []
+
+    for unit_id, segment_dict in unit_pk_dict.items():
+        unit_id_list.append(unit_id)
+
+        for segment_id, discipline_dict in segment_dict.items():
+            segment_id_list.append(segment_id)
+
+            for discipline_id, wp_dict in discipline_dict.items():
+                discipline_id_list.append(discipline_id)
+
+                for wp_id, wp_code in wp_dict.items():
+                    wp_id_list.append(wp_id)
+                    wp_code_list.append(wp_code)
+
+    msg = f'len(unit_id_list): {len(unit_id_list)}, unit_id_list: {unit_id_list}\n' \
+          f'len(segment_id_list): {len(segment_id_list)}, segment_id_list: {segment_id_list}\n' \
+          f'len(discipline_id_list): {len(discipline_id_list)}, discipline_id_list: {discipline_id_list}\n' \
+          f'len(wp_id_list): {len(wp_id_list)}, wp_id_list: {wp_id_list}\n' \
+          f'len(wp_code_list): {len(wp_code_list)}, wp_code_list: {wp_code_list}'
+    show_and_save_msg(msg=msg, file_name=f'{time_str}-count_unit_pk.log')
+
+
 if __name__ == '__main__':
     print(f'{datetime.now()}: ----------main----------')
 
     # wp_id_list_ = ['14348860328477', '13582213057053', '14348869569053', '13582215481885']
     # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
+    # unit_pk_dict_ = {}
 
     # batch_archive(wp_id_list_, pk_type='id')
     # count_wp_by_is_completed(wp_id_list_, 'id')
     # get_wp_code_list_by_id_list(wp_id_list_)
+    # count_unit_pk(unit_pk_dict_)
