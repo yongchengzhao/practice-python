@@ -31,6 +31,7 @@ def batch_archive(wp_pk_list: list, pk_type: str):
     @param pk_type:
     """
     for wp_pk in wp_pk_list:
+        log_result(is_save_to_file=False)
         msg = f'wp_pk: {wp_pk}, progress: {wp_pk_list.index(wp_pk)} / {len(wp_pk_list)}, ' \
               f'{round(wp_pk_list.index(wp_pk) / len(wp_pk_list) * 100, 2)}%'
         show_and_save_msg(msg=msg)
@@ -73,7 +74,7 @@ def batch_archive(wp_pk_list: list, pk_type: str):
 
         success_wp_pk_list.append(wp_pk)
 
-    log_result()
+    log_result(is_save_to_file=True)
 
 
 def show_and_save_msg(msg='', file_name='', flush=True):
@@ -89,7 +90,7 @@ def show_and_save_msg(msg='', file_name='', flush=True):
         print(msg, file=open(f'{file_name}', mode='a'), flush=flush)
 
 
-def log_result():
+def log_result(is_save_to_file: bool):
     """
     记录结果。
     :return:
@@ -104,7 +105,10 @@ ftp_failed_wp_pk_list: len: {len(ftp_failed_wp_pk_list)}, content: {ftp_failed_w
 summary_failed_wp_pk_list: len: {len(summary_failed_wp_pk_list)}, content: {summary_failed_wp_pk_list}
 success_wp_pk_list: len: {len(success_wp_pk_list)}, content: {success_wp_pk_list}
 '''
-    show_and_save_msg(msg=msg, file_name=f'{time_str}-result.log')
+    if is_save_to_file:
+        show_and_save_msg(msg=msg, file_name=f'{time_str}-result.log')
+    elif not is_save_to_file:
+        show_and_save_msg(msg=msg)
 
 
 def transfer_summary_info(archive_info: dict) -> bool:
