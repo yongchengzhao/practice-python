@@ -7,11 +7,11 @@ from datetime import datetime, timedelta
 import requests
 
 # 环境信息
-archive_ip_port = '10.215.160.41:8000'
-sjc_ip_port = '10.215.160.41:6543'
-# archive_ip_port = '10.218.8.34:8989'
-# sjc_ip_port = '10.218.8.32:8000'
-creator_username = 'wang_yt'
+# archive_ip_port = '10.215.160.41:8000'
+# sjc_ip_port = '10.215.160.41:6543'
+archive_ip_port = '10.218.8.34:8989'
+sjc_ip_port = '10.218.8.32:8000'
+creator_username = 'test'
 time_str = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
 # 异常列表
@@ -53,11 +53,11 @@ def batch_archive(wp_pk_list: list, pk_type: str):
             assemble_request_data_error_wp_pk_list.append(wp_pk)
             continue
 
-        # # 这里组件
-        # archive_info = perform_archive(request_data)
-        # if not archive_info:
-        #     archive_error_wp_pk_list.append(wp_pk)
-        #     continue
+        # 这里组件
+        archive_info = perform_archive(request_data)
+        if not archive_info:
+            archive_error_wp_pk_list.append(wp_pk)
+            continue
 
         # # 这里推送归档包
         # ftp_result = transfer_ftp(archive_info)
