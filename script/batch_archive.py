@@ -53,11 +53,11 @@ def batch_archive(wp_pk_list: list, pk_type: str):
             assemble_request_data_error_wp_pk_list.append(wp_pk)
             continue
 
-        # 这里组件
-        archive_info = perform_archive(request_data)
-        if not archive_info:
-            archive_error_wp_pk_list.append(wp_pk)
-            continue
+        # # 这里组件
+        # archive_info = perform_archive(request_data)
+        # if not archive_info:
+        #     archive_error_wp_pk_list.append(wp_pk)
+        #     continue
 
         # # 这里推送归档包
         # ftp_result = transfer_ftp(archive_info)
@@ -602,8 +602,8 @@ def count_unit_pk(unit_pk_dict: dict):
 if __name__ == '__main__':
     print(f'{datetime.now()}: ----------main----------')
 
-    # wp_id_list_ = ['14348860328477', '13582213057053', '14348869569053', '13582215481885']
-    # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
+    # wp_id_list_ = []
+    # wp_code_list_ = []
     # unit_pk_dict_ = {}
 
     # 工具函数
@@ -611,5 +611,5 @@ if __name__ == '__main__':
     # get_wp_code_list_by_id_list(wp_id_list_)
 
     # 批量组件函数。先统计是否满足组件条件，只对 is_completed 是 2 的单元进行组件，其他情况单元不组件。
-    # count_wp_by_is_completed(wp_id_list_, 'id')
-    # batch_archive(wp_id_list_, pk_type='id')
+    # count_wp_by_is_completed(wp_code_list_, 'code')
+    # batch_archive(wp_code_list_, pk_type='code')
