@@ -394,6 +394,9 @@ def get_static_file_list(wp_info: dict) -> list:
     # 2. 从 wp_info.extra_params.video_upload 中获取静态文件
     video_file_list = wp_info.get('extra_params', {}).get('video_upload', [])
     for video_file in video_file_list:
+        if not isinstance(video_file, dict) or not isinstance(video_file.get('file'), dict):
+            continue
+
         video_file_id = video_file.get('file', {}).get('id')
         if not video_file_id:
             continue
@@ -453,6 +456,8 @@ def get_wp_info_by_pk(pk: str, pk_type: str) -> dict:
     if not pk.strip() or not pk_type.strip():
         return {}
 
+    pk = pk.strip()
+
     if pk_type == 'code':
         url = f'http://{sjc_ip_port}/api/workpackages/code/{pk}/?all=true'
     elif pk_type == 'id':
@@ -495,8 +500,8 @@ def count_wp_by_is_completed(wp_pk_list: list, pk_type: str):
         * 1 已配置部分表单并且已提交部分表单 黄色
         * 2 提交流程表单 结束流程表单 绿色
         * 3 历史表单 已验评 绿色
-        * 4 已配置表单 均未提交表单 蓝色
-        * 5 表单提交到流程后 暂未审批通过 红色
+        * 4 已配置表单均未提交表单 蓝色
+        * 5 表单提交到流程后暂未审批通过 红色
         """
         if is_completed == 0:
             is_completed_0.append(wp_pk)
