@@ -181,12 +181,14 @@ def perform_archive(request_data: dict) -> dict:
     res = requests.post(url=url, data=json.dumps(request_data), headers=headers)
 
     if res.status_code != 201:
+        msg = f'perform_archive error, res.status_code: {res.status_code}, res.content: {res.content}'
+        show_and_save_msg(msg, f'{time_str}-perform_archive.log')
         return {}
 
     try:
         archive_info = json.loads(res.content.decode('utf-8'))
     except (json.decoder.JSONDecodeError, TypeError) as e:
-        msg = f'perform_archive error, exception: {e}'
+        msg = f'perform_archive error, exception: {e}, res.content: {res.content}'
         show_and_save_msg(msg, f'{time_str}-perform_archive.log')
         return {}
 
@@ -284,7 +286,7 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
     data['unit_engineering_code'] = wp_code
 
     msg = f'"{wp_code}": {json.dumps(data).encode("utf-8").decode("unicode_escape")},'
-    show_and_save_msg(msg)
+    show_and_save_msg(msg, file_name=f'{time_str}-request_data.log')
     return data
 
 
