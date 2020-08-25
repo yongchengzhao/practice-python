@@ -502,11 +502,53 @@ def count_wp_by_is_completed(wp_pk_list: list, pk_type: str):
         show_and_save_msg(msg=msg, file_name=f'{time_str}-count_wp_by_is_completed.log')
 
 
+def get_wp_code_list_by_id_list(wp_id_list: list):
+    """
+    根据施工包 id 列表获取 code 列表。
+    @param wp_id_list:
+    @return:
+    """
+    wp_dict_list = []
+    wp_code_list = []
+    wp_error_list = []
+
+    for wp_id in wp_id_list:
+
+        wp_code = get_wp_code_by_id(wp_id)
+        if not wp_code:
+            wp_error_list.append(wp_id)
+            continue
+
+        wp_dict_list.append({wp_id: wp_code})
+        wp_code_list.append(wp_code)
+
+        print(f'wp_id: {wp_id}, wp_code: {wp_code}, progress: {wp_id_list.index(wp_id)} / {len(wp_id_list)}, '
+              f'{round(wp_id_list.index(wp_id) / len(wp_id_list) * 100, 2)}%')
+
+    msg = f'wp_id_list: {wp_id_list}\nwp_code_list: {wp_code_list}\nwp_dict_list: {wp_dict_list}\n' \
+          f'wp_error_list: {wp_error_list}'
+    show_and_save_msg(msg=msg, file_name=f'{time_str}-get_wp_code_list_by_id_list.log')
+
+
+def get_wp_code_by_id(wp_id: str) -> str:
+    """
+    根据施工包 id 获取施工包编码。
+    @param wp_id:
+    @return:
+    """
+    wp_info = get_wp_info_by_pk(wp_id, 'id')
+    if not wp_info:
+        return ''
+
+    return wp_info.get('code', '')
+
+
 if __name__ == '__main__':
     print(f'{datetime.now()}: ----------main----------')
 
-    # wp_id_list_ = ['69767260673793', '30065569472298', '30065578123050', '30065573011242', '30065574649642']
+    # wp_id_list_ = ['14348860328477', '13582213057053', '14348869569053', '13582215481885']
     # wp_code_list_ = ['Z01-05-02-0001', 'Z01-05-02-0002', 'Z01-05-02-0003', 'Z01-05-02-0004', 'Z01-05-02-0005']
 
     # batch_archive(wp_id_list_, pk_type='id')
     # count_wp_by_is_completed(wp_id_list_, 'id')
+    # get_wp_code_list_by_id_list(wp_id_list_)
