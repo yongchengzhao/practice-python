@@ -251,6 +251,9 @@ def assemble_request_data_by_wp_info(wp_info: dict) -> dict:
     wp_name = wp_info.get('name', '')
 
     station_scope = extra_params.get('桩号范围') if '现场' not in extra_params.get('桩号范围') else ''
+    if isinstance(station_scope, str):
+        station_scope = station_scope.replace('\n', ' ')
+
     elevation_scope = extra_params.get('高程') if '现场' not in extra_params.get('高程') else ''
     construction_start = slice_date_str_from_datetime_str(wp_info.get('tech_parmas', {}).get('actual_process', {})
                                                           .get('start_time', ''))
