@@ -59,17 +59,17 @@ def batch_archive(wp_pk_list: list, pk_type: str):
             archive_error_wp_pk_list.append(wp_pk)
             continue
 
-        # 这里推送归档包
-        ftp_result = transfer_ftp(archive_info)
-        if ftp_result is False:
-            ftp_failed_wp_pk_list.append(wp_pk)
-            continue
-
-        # 这里传输概要信息
-        summary_result = transfer_summary_info(archive_info)
-        if summary_result is False:
-            summary_failed_wp_pk_list.append(wp_pk)
-            continue
+        # # 这里推送归档包
+        # ftp_result = transfer_ftp(archive_info)
+        # if ftp_result is False:
+        #     ftp_failed_wp_pk_list.append(wp_pk)
+        #     continue
+        #
+        # # 这里传输概要信息
+        # summary_result = transfer_summary_info(archive_info)
+        # if summary_result is False:
+        #     summary_failed_wp_pk_list.append(wp_pk)
+        #     continue
 
         success_wp_pk_list.append(wp_pk)
 
