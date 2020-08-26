@@ -550,11 +550,14 @@ def get_wp_code_list_by_id_list(wp_id_list: list):
         wp_dict_list.append({wp_id: wp_code})
         wp_code_list.append(wp_code)
 
-        print(f'wp_id: {wp_id}, wp_code: {wp_code}, progress: {wp_id_list.index(wp_id)} / {len(wp_id_list)}, '
-              f'{round(wp_id_list.index(wp_id) / len(wp_id_list) * 100, 2)}%')
+        msg = f'wp_id: {wp_id}, wp_code: {wp_code}, progress: {wp_id_list.index(wp_id)} / {len(wp_id_list)}, ' \
+              f'{round(wp_id_list.index(wp_id) / len(wp_id_list) * 100, 2)}%'
+        show_and_save_msg(msg=msg)
 
-    msg = f'wp_id_list: {wp_id_list}\nwp_code_list: {wp_code_list}\nwp_dict_list: {wp_dict_list}\n' \
-          f'wp_error_list: {wp_error_list}'
+    msg = f'wp_dict_list: len: {len(wp_dict_list)}, content: {wp_dict_list}\n' \
+          f'wp_id_list: len: {len(wp_id_list)}, content: {wp_id_list}\n' \
+          f'wp_code_list: len: {len(wp_code_list)}, content: {wp_code_list}\n' \
+          f'wp_error_list: len: {len(wp_error_list)}, content: {wp_error_list}'
     show_and_save_msg(msg=msg, file_name=f'{time_str}-get_wp_code_list_by_id_list.log')
     return wp_code_list
 
