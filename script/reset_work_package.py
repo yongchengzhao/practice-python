@@ -4,6 +4,7 @@
 import json
 from datetime import datetime
 import requests
+from .batch_archive import show_and_save_msg, time_str
 
 sjc_ip_port = '10.215.160.41:6543'
 # sjc_ip_port = '10.218.8.32:8000'
@@ -25,17 +26,17 @@ def get_about_unit_info():
 
     get_unit_id(unit_id_dict)  # 获取单元工程 id
 
-    print(f'unit_id_dict: {json.dumps(unit_id_dict)}')
-
     # print(f'len(global_unit_list): {len(global_unit_list)}, global_unit_list: {global_unit_list}')
     # print(f'len(global_segment_list): {len(global_segment_list)}, global_segment_list: {global_segment_list}')
     # print(f'len(global_discipline_list): {len(global_discipline_list)}, global_discipline_list: {global_discipline_list}')
     # print(f'len(global_wp_list): {len(global_wp_list)}, global_wp_list: {global_wp_list}')
 
-    print(f'len(global_unit_id_list): {len(global_unit_id_list)}, global_unit_id_list: {global_unit_id_list}')
-    print(f'len(global_segment_id_list): {len(global_segment_id_list)}, global_segment_id_list: {global_segment_id_list}')
-    print(f'len(global_discipline_id_list): {len(global_discipline_id_list)}, global_discipline_id_list: {global_discipline_id_list}')
-    print(f'len(global_wp_id_list): {len(global_wp_id_list)}, global_wp_id_list: {global_wp_id_list}')
+    msg = f'''unit_id_dict: len: {len(unit_id_dict)}, content: {json.dumps(unit_id_dict)}
+global_unit_id_list: len: {len(global_unit_id_list)}, content: {global_unit_id_list}
+global_segment_id_list: len: {len(global_segment_id_list)}, content: {global_segment_id_list}
+global_discipline_id_list: len: {len(global_discipline_id_list)}, content: {global_discipline_id_list}
+global_wp_id_list: len: {len(global_wp_id_list)}, content: {global_wp_id_list}'''
+    show_and_save_msg(msg=msg, file_name=f'{time_str}-unit_pk.log')
 
 
 def get_unit_segment_id(unit_id_dict):
