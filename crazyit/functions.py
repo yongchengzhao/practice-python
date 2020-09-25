@@ -1777,6 +1777,16 @@ def process_construction_user_list():
         print(f'{username}\t{person_name}\t{organization}')
 
 
+def test_assignment():
+    """
+    同时赋多个值。
+    :return:
+    """
+    a = b = datetime.date.today()
+    print(a)
+    print(b)
+
+
 def test():
     print(f'test')
 
