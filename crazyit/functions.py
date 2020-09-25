@@ -1486,6 +1486,22 @@ def test_date_parse():
     print(datetime.datetime.fromtimestamp(os.path.getatime('models.py')) + datetime.timedelta(hours=8))
 
 
+def test_datetime():
+    now = datetime.datetime.now()
+    print(now)  # 2020-08-13 15:19:05.243030
+    print(datetime.datetime.strftime(now, '%Y%m%d%H%M%S'))  # 20200813151959
+    print(datetime.datetime.strftime(now, '%Y-%m-%d %H:%M:%S'))  # 2020-08-13 15:20:44
+    print(now.strftime('%Y-%m-%dT%H:%M:%S'))  # 2020-08-13T15:34:20
+
+    time_str = datetime.datetime.strftime(now, '%Y-%m-%d %H:%M:%S')
+    # ValueError: time data '2020-08-13 15:22:32' does not match format '%Y-%m-%d%H:%M:%S'
+    # print(datetime.datetime.strptime(time_str, '%Y-%m-%d%H:%M:%S'))
+    print(datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S'))  # 2020-08-13 15:23:20
+    print(type(datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')))  # <class 'datetime.datetime'>
+    # 20200813152418
+    print(datetime.datetime.strftime(datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S'), '%Y%m%d%H%M%S'))
+
+
 def test_modify_file_name():
     directory = 'E:/Adam/audio/audiobook/adam'
 
