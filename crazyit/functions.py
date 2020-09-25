@@ -1,4 +1,5 @@
 # coding: utf-8
+# Python3
 
 import sys
 import os
@@ -13,6 +14,7 @@ import ftplib
 import json
 import base64
 import pprint
+from json.decoder import JSONDecodeError
 
 import requests
 from rest_framework.response import Response
@@ -1571,8 +1573,8 @@ def test_sort():
     print(f'll: {ll}')
 
     lll = []
-    for l in ll:
-        lll.append(int(l.replace('input', '')))
+    for L in ll:
+        lll.append(int(L.replace('input', '')))
     print(f'lll: {lll}')
     lll.sort()
     print(f'lll: {lll}')
@@ -1747,7 +1749,30 @@ def test_delete_direct_child_dirs(src_):
 
 
 def test_base64():
-    signature_value = 'eyJ0aW1lc3RhbXAiOnsidGltZSI6MTU2MzY5NDU4MjY5N30sImFwcG5hbWUiOiJNb3ppbGxhLzUuMCAoTGludXg7IEFuZHJvaWQgNi4wOyBMZW5vdm8gVEIzLVg3ME4gQnVpbGQvTVJBNThLOyB3dikgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgVmVyc2lvbi80LjAgQ2hyb21lLzQ2LjAuMjQ5MC43NiBTYWZhcmkvNTM3LjM2IEh0bWw1UGx1cy8xLjAiLCJkb2N1bWVudGlkIjoiNjYzMTU3MzgwOTMzMTMiLCJkb2N1bWVudG5hbWUiOiLmt7flh53lnJ/lpJbop4LotKjph4/or4TlrprooagiLCJtb3ZlYWJsZSI6dHJ1ZSwia2V5c24iOiJ4aWVfYjIiLCJvcmduYW1lIjoi5aSn5Z2d5bel5Yy65aSN5qOAIiwidXNlcm5hbWUiOiJ4aWVfYjIiLCJzZWFsIjp7InNpZ25uYW1lIjoi6LCi5paMMiIsImltZ2V4dCI6Ii5wbmciLCJpbWdkYXRhIjoiaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUVZQUFBQWVDQVlBQUFDUjgyZ2VBQUFDbUVsRVFWUjQydTJaMjhvQlVSVEhuWld6SEs2azNJb25VQzVFT1QrQ0M1RndKYm1RRXBIRG5lVFNVemk3OEJMa3hzdXNyN1ZyVHpPRHIvRXhqTDY1V00yZWJjK2V0WCt6MW44ZktBQkErUzV6T0J6d3p2YzlZNHEzdmt5aGdQbDhEaktZRzJCNnZaNE01aFlZT1pWNFZpcVZRQVp6SjFyRUFNUHUwMlF5UVNhVGdZK0Q4Zmw4WkxCNnZSNVdxOVdWUTYxV2k5UWRqMGZJNVhLaWc1RmN4Tnh6anRienIwTDd6T2Z6TUJ3T3I1NnBWcXZ3RldEdVFjSjFDOTVmTGhkU1p6UWFCUS9pZERxUnFYMDBHcEdJNUw5RHJWYkRaRElCaThVaWZUQzczWTVKRnl6WDYzVndPcDJNNDQrQUVhcFpkcnNkYkRiYnk5UDBUMkJRTTNDUWpVYmo2a3VXeTJXZ1RxT2R6MmRSd0xEaEpCSUprRXpFTkp0TjBPbDA0SGE3R1lHTngrT2t2RjZ2R1REWmJGYlVpTUV5OVVGU3FYUkxXTTFtTTNGNlBCNERwdFF6WUhBS3JsUXF6SFBwZEJxVVNpVXhxOVVLWWdudzAyQW9CRDRzZEJxdk9MQmFyUVovQWVQMyswR2owVEFBYU4vVDZaUURSWkpnK09sQzZ3d0dBM0hZNVhKeE5FZG92K0Z3bUxSUHBWSWNNSjFPQnphYkRRTWV4VjJ5WUlUV1I2UFJoOVl4czltTTZCYlZMalIycEtDVzBUSTdaVDhPcGxBb0FLYVMwUGF4V0V4d1c0d01HbVhGWXBFRGhxNmlVZnhwM2F0MzdZcG45ZVdSOXV3dkw5UlVLaFVuVmJEYzcvZEpLbTIzVy9KYnQ5dmxwTnZId2FBNGlnMEdCOTV1dDVtMUNvV0VvczRIOXJYbk1ZK0FDWVZDNFBWNkFVV1lYWDl2aXY0M1lPNVpKQks1T1F2aDdQV3Z3U0NVL1g0UHQ4VDZjRGhjYlZNa0I0YWV4Yndhekc4V0RBWmZ0cVlSTldMWTArdzd3Q0FVajhjRGc4RUFKQTJHLy9YRUJvUDk0eDRxRUFpQTVEV0dmY2lFT3ZBdFo4dWlnOUZxdGN3S05abE15bURZdGx3dWliTUk2ZFY3bXEvLysyU3hXQkE0OUFoQ0J2T2w5Z08wWTFNL2ZFdmhvZ0FBQUFCSlJVNUVya0pnZ2c9PSIsIndpZHRoIjoxLjg1LCJpbWd0YWciOiIwIiwic2lnbnNuIjoiakhUWjF1SXI9NXpkcFJvd2grQWVpR2JXMDdYSkxPOTJ5bERNRmZza1FVS2d4UFMzWU50OEUvbmFCNGNxVjZDbXYiLCJoZWlnaHQiOjAuNzl9LCJwcm90ZWN0ZWREYXRhIjpbXSwic2VhbFR5cGUiOiJzZXJ2ZXIiLCJ2ZXIiOnsibmFtZSI6IjEuMC4yMCIsImNvZGUiOjEwMH0sInBvc2l0aW9uIjp7InBvc2l0aW9uMyI6e319LCJ0aW1laWQiOjE1NjM2OTQ1ODI3ODR9'
+    signature_value = 'eyJ0aW1lc3RhbXAiOnsidGltZSI6MTU2MzY5NDU4MjY5N30sImFwcG5hbWUiOiJNb3ppbGxhLzUuMCAoTGludXg7IEFu' \
+                      'ZHJvaWQgNi4wOyBMZW5vdm8gVEIzLVg3ME4gQnVpbGQvTVJBNThLOyB3dikgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRN' \
+                      'TCwgbGlrZSBHZWNrbykgVmVyc2lvbi80LjAgQ2hyb21lLzQ2LjAuMjQ5MC43NiBTYWZhcmkvNTM3LjM2IEh0bWw1UGx1' \
+                      'cy8xLjAiLCJkb2N1bWVudGlkIjoiNjYzMTU3MzgwOTMzMTMiLCJkb2N1bWVudG5hbWUiOiLmt7flh53lnJ/lpJbop4Lo' \
+                      'tKjph4/or4TlrprooagiLCJtb3ZlYWJsZSI6dHJ1ZSwia2V5c24iOiJ4aWVfYjIiLCJvcmduYW1lIjoi5aSn5Z2d5bel' \
+                      '5Yy65aSN5qOAIiwidXNlcm5hbWUiOiJ4aWVfYjIiLCJzZWFsIjp7InNpZ25uYW1lIjoi6LCi5paMMiIsImltZ2V4dCI6' \
+                      'Ii5wbmciLCJpbWdkYXRhIjoiaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUVZQUFBQWVDQVlBQUFDUjgyZ2VBQUFDbUVs' \
+                      'RVFWUjQydTJaMjhvQlVSVEhuWld6SEs2azNJb25VQzVFT1QrQ0M1RndKYm1RRXBIRG5lVFNVemk3OEJMa3hzdXNyN1Zy' \
+                      'VHpPRHIvRXhqTDY1V00yZWJjK2V0WCt6MW44ZktBQkErUzV6T0J6d3p2YzlZNHEzdmt5aGdQbDhEaktZRzJCNnZaNE01' \
+                      'aFlZT1pWNFZpcVZRQVp6SjFyRUFNUHUwMlF5UVNhVGdZK0Q4Zmw4WkxCNnZSNVdxOVdWUTYxV2k5UWRqMGZJNVhLaWc1' \
+                      'RmN4Tnh6anRienIwTDd6T2Z6TUJ3T3I1NnBWcXZ3RldEdVFjSjFDOTVmTGhkU1p6UWFCUS9pZERxUnFYMDBHcEdJNUw5' \
+                      'RHJWYkRaRElCaThVaWZUQzczWTVKRnl6WDYzVndPcDJNNDQrQUVhcFpkcnNkYkRiYnk5UDBUMkJRTTNDUWpVYmo2a3VX' \
+                      'eTJXZ1RxT2R6MmRSd0xEaEpCSUprRXpFTkp0TjBPbDA0SGE3R1lHTngrT2t2RjZ2R1REWmJGYlVpTUV5OVVGU3FYUkxX' \
+                      'TTFtTTNGNlBCNERwdFF6WUhBS3JsUXF6SFBwZEJxVVNpVXhxOVVLWWdudzAyQW9CRDRzZEJxdk9MQmFyUVovQWVQMysw' \
+                      'R2owVEFBYU4vVDZaUURSWkpnK09sQzZ3d0dBM0hZNVhKeE5FZG92K0Z3bUxSUHBWSWNNSjFPQnphYkRRTWV4VjJ5WUlU' \
+                      'V1I2UFJoOVl4czltTTZCYlZMalIycEtDVzBUSTdaVDhPcGxBb0FLYVMwUGF4V0V4d1c0d01HbVhGWXBFRGhxNmlVZnhw' \
+                      'M2F0MzdZcG45ZVdSOXV3dkw5UlVLaFVuVmJEYzcvZEpLbTIzVy9KYnQ5dmxwTnZId2FBNGlnMEdCOTV1dDVtMUNvV0Vv' \
+                      'czRIOXJYbk1ZK0FDWVZDNFBWNkFVV1lYWDl2aXY0M1lPNVpKQks1T1F2aDdQV3Z3U0NVL1g0UHQ4VDZjRGhjYlZNa0I0' \
+                      'YWV4Yndhekc4V0RBWmZ0cVlSTldMWTArdzd3Q0FVajhjRGc4RUFKQTJHLy9YRUJvUDk0eDRxRUFpQTVEV0dmY2lFT3ZB' \
+                      'dFo4dWlnOUZxdGN3S05abE15bURZdGx3dWliTUk2ZFY3bXEvLysyU3hXQkE0OUFoQ0J2T2w5Z08wWTFNL2ZFdmhvZ0FB' \
+                      'QUFCSlJVNUVya0pnZ2c9PSIsIndpZHRoIjoxLjg1LCJpbWd0YWciOiIwIiwic2lnbnNuIjoiakhUWjF1SXI9NXpkcFJv' \
+                      'd2grQWVpR2JXMDdYSkxPOTJ5bERNRmZza1FVS2d4UFMzWU50OEUvbmFCNGNxVjZDbXYiLCJoZWlnaHQiOjAuNzl9LCJw' \
+                      'cm90ZWN0ZWREYXRhIjpbXSwic2VhbFR5cGUiOiJzZXJ2ZXIiLCJ2ZXIiOnsibmFtZSI6IjEuMC4yMCIsImNvZGUiOjEw' \
+                      'MH0sInBvc2l0aW9uIjp7InBvc2l0aW9uMyI6e319LCJ0aW1laWQiOjE1NjM2OTQ1ODI3ODR9'
     decoded_data = json.loads(base64.b64decode(signature_value).decode('utf-8'))
     print(f'type(decoded_data): {type(decoded_data)}')
     print(f'decoded_data: {decoded_data}')
@@ -1785,6 +1810,134 @@ def test_assignment():
     a = b = datetime.date.today()
     print(a)
     print(b)
+
+
+def test_os_path():
+    """
+    练习路径。
+    :return:
+    """
+    file_name = '坝肩槽边坡1-2.pdf'
+    print(os.path.basename(file_name))  # 坝肩槽边坡1-2.pdf
+    print(os.path.splitext(file_name))  # ('坝肩槽边坡1-2', '.pdf')
+    print(os.path.splitext(file_name)[0])  # 坝肩槽边坡1-2
+
+    file_name2 = '/home/adam/src/app/media/坝肩槽边坡1-2.pdf'
+    print(os.path.basename(file_name2))  # 坝肩槽边坡1-2.pdf
+    print(os.path.splitext(file_name2))  # ('/home/adam/src/app/media/坝肩槽边坡1-2', '.pdf')
+    print(os.path.splitext(file_name2)[0])  # /home/adam/src/app/media/坝肩槽边坡1-2
+    print(os.path.splitext(os.path.basename(file_name2)))  # ('坝肩槽边坡1-2', '.pdf')
+    print(os.path.splitext(os.path.basename(file_name2))[0])  # 坝肩槽边坡1-2
+
+    file_name3 = ''
+    print(os.path.basename(file_name3))  # 空字符串
+    print(os.path.splitext(file_name3))  # ('', '')
+    print(os.path.splitext(file_name3)[0])  #
+    print(os.path.splitext(os.path.basename(file_name3)))  # ('', '')
+    print(os.path.splitext(os.path.basename(file_name3))[0])  #
+
+
+def test_json():
+    """
+    解析清华紫光传过来的四性检测结果集。
+    :return:
+    """
+    data = {
+        "result": "[{\"DID\":289,\"PID\":13,\"JCCODE\":\"1-1\",\"JCNAME\":\"电子文件来源真实性检测\",\"FIELDNAME\":\"无\","
+                  "\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"真实性\",\"JCDX\":\"归档电子文件\",\"RESULT\":\"通过\",\"BZ"
+                  "\":null,\"JCLX\":\"电子原文检测\",\"JCMD\":\"保证电子文件来源的真实性\",\"JCYJ\":\"对归档数据包中包含的数字"
+                  "摘要、电子签名、电子印章、时间戳等技术措施的固化信息的有效性进行验证\"},{\"DID\":290,\"PID\":13,\"JCCODE\":"
+                  "\"1-10\",\"JCNAME\":\"电子文件内容据真实性检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\","
+                  "\"JCLB\":\"真实性\",\"JCDX\":\"归档电子文件内容数据\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":\"电子原"
+                  "文检测\",\"JCMD\":\"保证电子文件内容数据电子属性的一致性\",\"JCYJ\":\"系统自动捕获电子文件属性信息，与系统解"
+                  "析XML封装的元数据信息比对检测是否一致\"},{\"DID\":291,\"PID\":13,\"JCCODE\":\"1-11\",\"JCNAME\":\"元数据"
+                  "与内容关联真实性检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"真实性\",\"JCDX"
+                  "\":\"元数据关联的电子文件内容数据\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":\"电子原文检测\",\"JCMD\":"
+                  "\"保证电子文件元数据与内容数据的关联\",\"JCYJ\":\"依据系统自动对XML解析的电子文件存储路径，检测元数据与内容关"
+                  "联是否一致\"},{\"DID\":292,\"PID\":13,\"JCCODE\":\"1-14\",\"JCNAME\":\"归档信息包真实性检测\",\"FIELDN"
+                  "AME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"真实性\",\"JCDX\":\"归档信息包\",\"RESULT\":"
+                  "\"通过\",\"BZ\":null,\"JCLX\":\" \",\"JCMD\":\"保证信息包在归档前后完全一致\",\"JCYJ\":\"通过MD5加盐算法"
+                  "，检测归档信息包MD5值与数据库中MD5值是否一致\"},{\"DID\":293,\"PID\":13,\"JCCODE\":\"2-1\",\"JCNAME\":"
+                  "\"电子文件数据总件数检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"完整性\","
+                  "\"JCDX\":\"电子文件总件数\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证归档"
+                  "电子文件数量和实际接收数量相符\",\"JCYJ\":\"系统自动统计电子文件总件数，与归档文件比对检测是否一致\"},{\"DID"
+                  "\":294,\"PID\":13,\"JCCODE\":\"2-2\",\"JCNAME\":\"总字节数相符性检测\",\"FIELDNAME\":\"无\",\"CHNAME"
+                  "\":\"无\",\"AW\":\"无\",\"JCLB\":\"完整性\",\"JCDX\":\"电子文件总字节数\",\"RESULT\":\"通过\",\"BZ\":"
+                  "null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证归档电子文件字节数和实际接收字节数相符\",\"JCYJ\":\"系统自动统"
+                  "计电子文件总字节数，与归档文件比对检测是否一致\"},{\"DID\":295,\"PID\":13,\"JCCODE\":\"2-3\",\"JCNAME\":"
+                  "\"电子文件元数据完整性检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"完整性\","
+                  "\"JCDX\":\"电子文件元数据\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证电子"
+                  "文件元数据项的完整性\",\"JCYJ\":\"依据DA/T 46-2009中的元数据项或自定义的元数据项进行检测，判断电子文件元数据"
+                  "项是否存在缺项情况\"},{\"DID\":296,\"PID\":13,\"JCCODE\":\"2-4\",\"JCNAME\":\"电子文件元数据必填著录项"
+                  "目检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"完整性\",\"JCDX\":\"电子文件"
+                  "元数据\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证电子文件元数据必填项的完"
+                  "整性\",\"JCYJ\":\"依据DA/T46-2009中的元数据项或自定义的元数据项进行检测，判断元数据必填项是否为空\"},{\"DID\""
+                  ":297,\"PID\":13,\"JCCODE\":\"2-5\",\"JCNAME\":\"过程信息完整性检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\""
+                  "无\",\"AW\":\"无\",\"JCLB\":\"完整性\",\"JCDX\":\"电子文件元数据中的处理过程信息\",\"RESULT\":\"通过\","
+                  "\"BZ\":null,\"JCLX\":null,\"JCMD\":\"保证电子文件过程信息的完整性\",\"JCYJ\":\"检测电子文件处理过程信息是"
+                  "否完整\"},{\"DID\":298,\"PID\":13,\"JCCODE\":\"2-6\",\"JCNAME\":\"连续性元数据项检测\",\"FIELDNAME\":"
+                  "\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"完整性\",\"JCDX\":\"检测具有连续编号性质的元数据项是否"
+                  "完整\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证电子文件元数据的连续性\","
+                  "\"JCYJ\":\"依据DA/T 22-2015以及用户自定义的具有连续编号性质的元数据项（归档号、件内顺序号等）和起始号规则进行"
+                  "检测。具有连续编号性质的元数据项是否按顺序编号，是否从指定的起始号开始编号\"},{\"DID\":299,\"PID\":13,\"JCCODE"
+                  "\":\"2-7\",\"JCNAME\":\"电子文件内容完整性检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\","
+                  "\"JCLB\":\"完整性\",\"JCDX\":\"电子文件内容数据\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":null,\"JCMD"
+                  "\":\"保证电子文件内容数据完整\",\"JCYJ\":\"通过MD5加盐算法，检测电子文件及附件数据是否完整\"},{\"DID\":300,"
+                  "\"PID\":13,\"JCCODE\":\"2-10\",\"JCNAME\":\"归档信息包元数据完整性检测\",\"FIELDNAME\":\"无\",\"CHNAME"
+                  "\":\"无\",\"AW\":\"无\",\"JCLB\":\"完整性\",\"JCDX\":\"比对原始数据与信息包数据，检测元数据项是否完整\","
+                  "\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":null,\"JCMD\":\"保证保存信息包中元数据项的完整性\",\"JCYJ\":"
+                  "\"1.对于普通格式的信息包，依据DA/T 46-2009中的元数据项或自定义的元数据项进行检测，判断其是否存在缺项情况；2.对"
+                  "于EEP封装包，还需依据DA/T 48-2009附录C《封装元数据表》对封装元数据项进行检测\"},{\"DID\":301,\"PID\":13,"
+                  "\"JCCODE\":\"2-11\",\"JCNAME\":\"归档信息包内容数据完整性检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\","
+                  "\"AW\":\"无\",\"JCLB\":\"完整性\",\"JCDX\":\"比对原始数据与信息包数据，检测电子文件数量是否完整\",\"RESULT"
+                  "\":\"通过\",\"BZ\":null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证归档信息包中内容数据齐全完整\",\"JCYJ\":"
+                  "\"依据归档信息包元数据中记录的文件数量检测归档信息包中实际包含的电子文件数量，比对两者是否相符\"},{\"DID\":302,"
+                  "\"PID\":13,\"JCCODE\":\"3-1\",\"JCNAME\":\"信息包中元数据的可读性检测\",\"FIELDNAME\":\"无\",\"CHNAME"
+                  "\":\"无\",\"AW\":\"无\",\"JCLB\":\"可用性\",\"JCDX\":\"归档信息包中的元数据\",\"RESULT\":\"通过\",\"BZ"
+                  "\":null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证电子文件元数据可正常读取\",\"JCYJ\":\"检测归档信息包中存放元"
+                  "数据的XML文件是否可以正常解析、读取数据\"},{\"DID\":303,\"PID\":13,\"JCCODE\":\"3-2\",\"JCNAME\":\"目标数"
+                  "据库中的元数据可访问性检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"可用性\",\"J"
+                  "CDX\":\"数据库中的元数据\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":\"元数据检测\",\"JCMD\":\"保证电子文件"
+                  "元数据可正常访问\",\"JCYJ\":\"检测是否可以正常连接数据库，是否可以正常访问元数据表中的记录\"},{\"DID\":304,\"P"
+                  "ID\":13,\"JCCODE\":\"3-3\",\"JCNAME\":\"检测电子文件内容数据格式是否为通用格式\",\"FIELDNAME\":\"无\",\"CH"
+                  "NAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"可用性\",\"JCDX\":\"检测归档信息包的文件格式是否可用\",\"RESULT\":"
+                  "\"通过\",\"BZ\":null,\"JCLX\":\"电子原文检测\",\"JCMD\":\"保证电子文件内容数据格式符合归档要求\",\"JCYJ\":"
+                  "\"依据电子文件归档要求对电子文件内容数据格式进行检测，判断其是否符合GB/T 18894-2016、GB/T 33190-2016等标准要求"
+                  "\"},{\"DID\":305,\"PID\":13,\"JCCODE\":\"3-8\",\"JCNAME\":\"信息包中包含的内容数据格式合规性检测\",\"FI"
+                  "ELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"可用性\",\"JCDX\":\"归档信息包中的电子文件内"
+                  "容数据\",\"RESULT\":\"通过\",\"BZ\":null,\"JCLX\":null,\"JCMD\":\"确保归档信息包中的电子文件可读、可用\","
+                  "\"JCYJ\":\"对归档信息包是否包含非公开压缩算法、是否加密、是否包含不符合归档要求的文件格式等进行检测\"},{\"DID\""
+                  ":306,\"PID\":13,\"JCCODE\":\"4-1\",\"JCNAME\":\"系统环境中是否安装杀毒软件检测\",\"FIELDNAME\":\"无\","
+                  "\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"安全性\",\"JCDX\":\"系统环境\",\"RESULT\":\"通过\",\"BZ\":nu"
+                  "ll,\"JCLX\":\"元数据检测\",\"JCMD\":\"检测系统环境是否安装杀毒软件\",\"JCYJ\":\"检测操作系统是否安装国内通用"
+                  "杀毒软件\"},{\"DID\":307,\"PID\":13,\"JCCODE\":\"4-2\",\"JCNAME\":\"检测电子文件是否感染病毒\",\"FIELDN"
+                  "AME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"安全性\",\"JCDX\":\"归档信息包\",\"RESULT\":\"通"
+                  "过\",\"BZ\":null,\"JCLX\":\" \",\"JCMD\":\"保证归档信息包没有感染病毒\",\"JCYJ\":\"调用国内通用杀毒软件接"
+                  "口，检测归档信息包是否感染病毒\"},{\"DID\":308,\"PID\":13,\"JCCODE\":\"4-7\",\"JCNAME\":\"归档过程安全性"
+                  "检测\",\"FIELDNAME\":\"无\",\"CHNAME\":\"无\",\"AW\":\"无\",\"JCLB\":\"安全性\",\"JCDX\":\"系统环境\",\"RE"
+                  "SULT\":\"通过\",\"BZ\":null,\"JCLX\":null,\"JCMD\":\"判断归档过程是否安全、可控\",\"JCYJ\":\"按照国家安"
+                  "全保密要求从技术和管理等方面采取措施，确保归档信息包在归档和保存过程安全、可控\"}]",
+        "transfer_status": 1,
+        "name": "/2020/08/雅砻江杨房沟水电站△拱坝工程EL2097.00～EL2080.00△左岸坝基石方边坡开挖拱肩槽边坡开挖1-1_质量评定表及工序质量检查表等.zip",
+        "pk": "300"
+    }
+    detect_result_list_str = data.get('result')
+    if not detect_result_list_str or not isinstance(detect_result_list_str, str):
+        return None
+
+    try:
+        detect_result_list = json.loads(detect_result_list_str)
+    except (JSONDecodeError, TypeError) as e:
+        print(f'get_four_features_detection_zg error, e: {e}')
+        return None
+
+    if not detect_result_list or not isinstance(detect_result_list, list):
+        return None
+
+    print(type(detect_result_list))
+    for detect_result in detect_result_list:
+        print(type(detect_result))
+        print(detect_result)
 
 
 def test():
