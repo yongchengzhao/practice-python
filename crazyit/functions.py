@@ -451,19 +451,19 @@ def test_dict():
         dd_.update(gender='female')
 
     dd = {'kw': 'kw', 'zl': 'zl', 'zcy': 'zcy'}
-    print(dd, 'original')
+    print(dd)  # {'kw': 'kw', 'zl': 'zl', 'zcy': 'zcy'}
 
     # for key, value in dd_.items():
     #     print(key, value)
 
     dd['zcy'] = 'Adam'
-    print(dd, 'modify zcy')
+    print(dd)  # {'kw': 'kw', 'zl': 'zl', 'zcy': 'Adam'}
 
     dd.update(name='Eve', age=24)
-    print(dd, 'add name and age')
+    print(dd)  # {'kw': 'kw', 'zl': 'zl', 'zcy': 'Adam', 'name': 'Eve', 'age': 24}
 
     update_gender(dd)
-    print(dd, 'add gender via function')
+    print(dd)  # {'kw': 'kw', 'zl': 'zl', 'zcy': 'Adam', 'name': 'Eve', 'age': 24, 'gender': 'female'}
 
     print('-' * 60)
     dd2 = {'a': 1, 'b': 2, 'c': 3}
@@ -1959,4 +1959,4 @@ def test():
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test()
+    test_dict()
