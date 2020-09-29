@@ -11,6 +11,7 @@ import random
 import uuid
 import _thread
 import ftplib
+import hashlib
 import json
 import base64
 import pprint
@@ -731,6 +732,18 @@ def test_finally():
         print('ValueError')
     finally:
         print('finally')
+
+
+def generate_md5_by_str():
+    msg = 'Adam'
+    md5 = hashlib.md5()
+    md5.update(msg.encode('utf-8'))
+    print(type(md5.hexdigest()))
+    print(md5.hexdigest())
+
+    md5_salted = hashlib.md5(msg.encode('utf-8'))
+    print(type(md5_salted.hexdigest()))
+    print(md5_salted.hexdigest())
 
 
 # def test_md5_insert():
