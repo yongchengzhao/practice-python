@@ -734,8 +734,8 @@ def test_finally():
         print('finally')
 
 
-def generate_md5_by_str():
-    msg = 'Adam'
+def generate_md5_by_str(msg: str):
+    # msg = 'CHENBIN'
     md5 = hashlib.md5()
     md5.update(msg.encode('utf-8'))
     print(type(md5.hexdigest()))
@@ -744,6 +744,8 @@ def generate_md5_by_str():
     md5_salted = hashlib.md5(msg.encode('utf-8'))
     print(type(md5_salted.hexdigest()))
     print(md5_salted.hexdigest())
+
+    return md5.hexdigest()
 
 
 # def test_md5_insert():
@@ -765,6 +767,14 @@ def salt_md5(md5):
     salted_md5 = ''
     for i in range(0, 32, 2):
         salted_md5 += md5[i: i + 2] + hex(random.randint(0, 15))[-1]
+    return salted_md5
+
+
+def generate_salted_md5_value_by_str(msg: str) -> str:
+    raw_md5 = generate_md5_by_str(msg)
+    salted_md5 = salt_md5(raw_md5)
+
+    print(salted_md5)
     return salted_md5
 
 
@@ -1959,4 +1969,5 @@ def test():
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    test_dict()
+    generate_salted_md5_value_by_str('CHENBIN')
+    test()
