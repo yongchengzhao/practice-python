@@ -1964,10 +1964,15 @@ def test_json():
 
 
 def test():
-    print(f'test')
+    pass
+
+
+def test1(msg):
+    pass
 
 
 if __name__ == '__main__':
     print(f'----------main----------')
-    generate_salted_md5_value_by_str('CHENBIN')
     test()
+
+    test1(111)
