@@ -1800,6 +1800,25 @@ def test_base64():
     print(f'type(decoded_data): {type(decoded_data)}')
     print(f'decoded_data: {decoded_data}')
     pprint.pprint(decoded_data)
+    print(1111111111111111111111111111111111111)
+
+    base64_str = base64.b64encode('Adam'.encode('utf-8'))
+    print(base64_str.decode('utf-8'))
+
+    base64_file_str = base64.b64encode(open('models.py', mode='rb', buffering=False).read())
+    print(base64_file_str.decode('utf-8'))
+
+    res = requests.get(url=f'http://10.215.160.41:8000/main/api/download_logfile/?file_name=debug')
+    print(res.content)
+    print(base64.b64encode(res.content).decode('utf-8'))
+
+    print(222222222222222222222222222)
+    res = requests.get(url=f'https://upload-images.jianshu.io/upload_images/6443341-2cc8851685d5c3c9.png')
+    print(res.content)
+    print(base64.b64encode(res.content))
+
+    print(33333333333333333333333333333333333)
+    print(base64.b64encode(open('6443341-2cc8851685d5c3c9.png', mode='rb').read()))
 
 
 def test_is_instance():
