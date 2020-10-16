@@ -391,11 +391,11 @@ def test_timestamp():
     练习时间戳。
     :return:
     """
-    print(datetime.datetime.timestamp(datetime.datetime.now()))
-    print(time.time())
-    print(int(time.time() * 10 ** 3))
-    print(time.time() * 10 ** 3)
-    print(str(int(time.time() * 10 ** 3)), 'adam')
+    print(datetime.datetime.timestamp(datetime.datetime.now()))  # 1602756716.7736
+    print(time.time())  # 1602756716.7736003
+    print(int(time.time() * 10 ** 3))  # 1602756716773
+    print(time.time() * 10 ** 3)  # 1602756716773.6003
+    print(str(int(time.time() * 10 ** 3)), 'adam')  # 1602756716773 adam
 
 
 def test_f():
@@ -1980,6 +1980,16 @@ def test_json():
     for detect_result in detect_result_list:
         print(type(detect_result))
         print(detect_result)
+
+
+def test_ziguang_notify_service():
+    post_url = f'http://10.185.101.4/HamsPort/cxf/SfssStar?wsdl'
+    data = b'\n<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:unis="http://unisra.www.com/">\n   <soapenv:Header/>\n   <soapenv:Body>\n      <unis:ReceiveMsg>\n         <!--Optional:-->\n         <usercode>ZHOUQIANG</usercode>\n         <!--Optional:-->\n         <title>\xe4\xb8\x89\xe6\x96\xb9\xe5\x9b\x9b\xe5\xae\xa1\xe5\xbe\x85\xe5\x8a\x9e\xe4\xbb\xbb\xe5\x8a\xa1</title>\n         <!--Optional:-->\n         <url>http://10.218.8.31/examination/?task_id=0002&current_node=1</url>\n      </unis:ReceiveMsg>\n   </soapenv:Body>\n</soapenv:Envelope>'
+    headers = {'content-type': 'text/xml'}
+
+    res = requests.post(url=post_url, headers=headers, data=data)
+    print(res.status_code)
+    print(res.content)
 
 
 def test():
